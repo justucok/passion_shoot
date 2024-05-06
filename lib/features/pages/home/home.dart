@@ -48,11 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             NavigationDestination(
               icon: Icon(Icons.credit_card),
-              label: 'Rekening',
+              label: 'Sumber Dana',
             ),
             NavigationDestination(
               icon: Icon(Icons.bar_chart),
-              label: 'Rekap',
+              label: 'Rekapitulasi',
             ),
             NavigationDestination(
               icon: Icon(Icons.calendar_today),
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             NavigationDestination(
               icon: Icon(Icons.person_pin_rounded),
-              label: 'About',
+              label: 'Tentang',
             ),
           ],
           selectedIndex: _currentIndex,

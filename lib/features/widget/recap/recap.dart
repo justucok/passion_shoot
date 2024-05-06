@@ -34,7 +34,7 @@ class _RecapContentState extends State<RecapContent> {
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(56),
         child: CustomAppBar(
-          title: 'Rekap',
+          title: 'Rekapitulasi',
         ),
       ),
       body: Column(
@@ -47,12 +47,12 @@ class _RecapContentState extends State<RecapContent> {
             width: double.infinity,
             child: ToggleButtons(
               textStyle: primaryTextStyle,
-              splashColor: primaryColor,
+              splashColor: secondaryColor,
               color: textColor,
               selectedColor: Colors.white,
-              fillColor: primaryColor,
-              borderColor: primaryColor,
-              selectedBorderColor: primaryColor,
+              fillColor: secondaryColor,
+              borderColor: secondaryColor,
+              selectedBorderColor: secondaryColor,
               borderRadius: BorderRadius.circular(12),
               isSelected: isSelected,
               onPressed: (int newIndex) {
@@ -81,9 +81,14 @@ class _RecapContentState extends State<RecapContent> {
           ),
           // end toggle button
           Center(
-            child: Text(
-              '01 Apr 2024 - 30 Apr 2024',
-              style: primaryTextStyle,
+            child: TextButton(
+              onPressed: () {
+                
+              },
+              child: Text(
+                '01 Apr 2024 - 30 Apr 2024',
+                style: primaryTextStyle,
+              ),
             ),
           ),
           const SizedBox(

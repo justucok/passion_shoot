@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 
@@ -13,7 +12,7 @@ class AboutContent extends StatelessWidget {
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(56),
-        child: CustomAppBar(title: 'About'),
+        child: CustomAppBar(title: 'Tentang Aplikasi'),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),

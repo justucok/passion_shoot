@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
+import 'package:proj_passion_shoot/features/widget/add_button.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 
 class MethodContent extends StatelessWidget {
@@ -13,7 +14,7 @@ class MethodContent extends StatelessWidget {
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(56),
         child: CustomAppBar(
-          title: 'Rekening',
+          title: 'Sumber Dana',
         ),
       ),
       body: Container(
@@ -131,6 +132,9 @@ class MethodContent extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: AddButton(onPressed: () {
+        
+      },),
     );
   }
 }

@@ -57,7 +57,6 @@ class _ScheduleContentState extends State<ScheduleContent> {
         ),
       ),
       floatingActionButton: AddButton(onPressed: () {
-        
       },),
     );
   }
