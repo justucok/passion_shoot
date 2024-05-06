@@ -101,7 +101,7 @@ class MethodContent extends StatelessWidget {
                       style: primaryTextStyle,
                     ),
                     trailing: Text(
-                      '400.000',
+                      '1.400.000',
                       style: primaryTextStyle.copyWith(fontSize: 14),
                     ),
                   ),
@@ -121,7 +121,7 @@ class MethodContent extends StatelessWidget {
                       style: primaryTextStyle,
                     ),
                     trailing: Text(
-                      '1.150.000',
+                      '150.000',
                       style: primaryTextStyle.copyWith(fontSize: 14),
                     ),
                   ),

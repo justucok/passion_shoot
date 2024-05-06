@@ -13,6 +13,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: const Locale('id_ID'),
       debugShowCheckedModeBanner: false,
       title: 'Passion.Shoot',
       onGenerateRoute: route.onRoutes,

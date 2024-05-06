@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
+import 'package:proj_passion_shoot/features/widget/recap/detail_list.dart';
 import 'package:proj_passion_shoot/features/widget/recap/graph.dart';
 
 class RecapContent extends StatefulWidget {
@@ -58,6 +60,7 @@ class _RecapContentState extends State<RecapContent> {
                   for (int i = 0; i < isSelected.length; i++) {
                     if (i == newIndex) {
                       isSelected[i] = true;
+                      // return Graph(dataMap: dataMap, colorList: colorList);
                     } else {
                       isSelected[i] = false;
                     }
@@ -77,7 +80,18 @@ class _RecapContentState extends State<RecapContent> {
             ),
           ),
           // end toggle button
-          Graph(dataMap: dataMap, colorList: colorList),
+          Center(
+            child: Text(
+              '01 Apr 2024 - 30 Apr 2024',
+              style: primaryTextStyle,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          isSelected[0]
+              ? Graph(dataMap: dataMap, colorList: colorList)
+              : const DetailList()
         ],
       ),
     );

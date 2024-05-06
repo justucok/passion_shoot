@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/widget/add_button.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
