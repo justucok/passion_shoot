@@ -6,7 +6,7 @@ class MyRoutes {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-            builder: (context) => HomeScreen());
+            builder: (context) => const HomeScreen());
 
       default:
         throw Exception('Invalid Route');

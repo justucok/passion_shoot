@@ -15,14 +15,15 @@ class ContentList extends StatelessWidget {
           Radius.circular(9),
         ),
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 12,
+      ),
+      // padding: const EdgeInsets.all(),
       width: double.infinity,
       child: ListView(
         children: [
           // list content
           ListTile(
-            contentPadding: const EdgeInsets.all(0),
             title: Text(
               'Gaji Bulanan',
               style: primaryTextStyle,
@@ -30,12 +31,11 @@ class ContentList extends StatelessWidget {
             subtitle: const Text('Gaji Bulanan'),
             trailing: Text(
               '+2.000.000',
-              style: primaryTextStyle.copyWith(
-                  color: succesColor, fontSize: 14),
+              style:
+                  primaryTextStyle.copyWith(color: succesColor, fontSize: 14),
             ),
           ),
           ListTile(
-            contentPadding: const EdgeInsets.all(0),
             title: Text(
               'Belanja Bulanan',
               style: primaryTextStyle,
@@ -47,7 +47,6 @@ class ContentList extends StatelessWidget {
             ),
           ),
           ListTile(
-            contentPadding: const EdgeInsets.all(0),
             title: Text(
               'Jajan',
               style: primaryTextStyle,

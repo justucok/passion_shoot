@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
+import 'package:proj_passion_shoot/features/pages/method/new_method.dart';
 import 'package:proj_passion_shoot/features/widget/add_button.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
+import 'package:proj_passion_shoot/features/widget/method/method_list.dart';
 
 class MethodContent extends StatelessWidget {
   const MethodContent({
@@ -18,123 +20,28 @@ class MethodContent extends StatelessWidget {
         ),
       ),
       body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        width: double.infinity,
+        decoration: BoxDecoration(
         color: bgColor,
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(
-                'Total Saldo',
-                style: primaryTextStyle,
-              ),
-              trailing: Text(
-                '2.240.000',
-                style: primaryTextStyle.copyWith(fontSize: 14),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                children: [
-                  ListTile(
-                    title: Text(
-                      'BCA',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '470.000',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'BRI',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '0',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Dana',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '220.000',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Gopay',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '0',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Shopeepay',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '0',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Jago',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '0',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Mandiri',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '1.400.000',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'OVO',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '0',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Uang Tunai',
-                      style: primaryTextStyle,
-                    ),
-                    trailing: Text(
-                      '150.000',
-                      style: primaryTextStyle.copyWith(fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        borderRadius: const BorderRadius.all(
+          Radius.circular(9),
         ),
       ),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      // padding: const EdgeInsets.all(12),
+      width: double.infinity,
+        child: const MethodList(),
+      ),
       floatingActionButton: AddButton(onPressed: () {
-        
+        Navigator.of(context).push(
+            MaterialPageRoute<dynamic>(
+              builder: (context) => NewMethodScreen(onPressed: () {
+                
+              },)
+            ),
+          );
       },),
     );
   }
 }
+
+

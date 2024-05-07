@@ -50,10 +50,5 @@ class MultipleButton extends StatelessWidget {
         color: alternativeColor,
       ),
     );
-    // FloatingActionButton(
-    //   onPressed: onPressed,
-    //   backgroundColor: primaryColor,
-    //   child: Icon(Icons.add,color: alternativeColor,),
-    // );
   }
 }

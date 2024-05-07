@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proj_passion_shoot/features/pages/transaction/transaction.dart';
+import 'package:proj_passion_shoot/features/pages/transaction/add_transaction.dart';
 import 'package:proj_passion_shoot/features/widget/multiple_button.dart';
 import 'package:proj_passion_shoot/features/widget/transaction/content_list.dart';
 import 'package:proj_passion_shoot/features/widget/transaction/datepicker_app_bar.dart';
@@ -43,7 +43,13 @@ class _TransactionContentState extends State<TransactionContent> {
             ),
           );
         },
-        outPressed: () {},
+        outPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<dynamic>(
+              builder: (context) => TransactionScreen(onPressed: () {  },)
+            ),
+          );
+        },
       ),
       // end add button
     );
