@@ -8,6 +8,8 @@ class ContentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double contentWidth = screenWidth * 0.9; // 90% dari lebar layar
     return Container(
       decoration: BoxDecoration(
         color: bgColor,
@@ -19,7 +21,7 @@ class ContentList extends StatelessWidget {
         horizontal: 12,
       ),
       // padding: const EdgeInsets.all(),
-      width: double.infinity,
+      width: contentWidth,
       child: ListView(
         children: [
           // list content

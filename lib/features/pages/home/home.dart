@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             NavigationDestination(
               icon: Icon(Icons.credit_card),
-              label: 'Sumber Dana',
+              label: 'Sumber',
             ),
             NavigationDestination(
               icon: Icon(Icons.bar_chart),
