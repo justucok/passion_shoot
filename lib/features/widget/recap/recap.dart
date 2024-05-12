@@ -40,11 +40,13 @@ class _RecapContentState extends State<RecapContent> {
       body: Column(
         children: [
           // toggle button
+
           Container(
             alignment: Alignment.center,
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             padding: const EdgeInsets.all(12),
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width *
+                0.9, // Menggunakan MediaQuery untuk mendapatkan lebar layar dan menyesuaikan Container
             child: ToggleButtons(
               textStyle: primaryTextStyle,
               splashColor: secondaryColor,
@@ -67,13 +69,17 @@ class _RecapContentState extends State<RecapContent> {
                   }
                 });
               },
-              children: const [
+              children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 60),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width *
+                          0.14), // Menggunakan MediaQuery untuk mendapatkan lebar layar dan menyesuaikan padding
                   child: Text('Realtime'),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 60),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width *
+                          0.14), // Menggunakan MediaQuery untuk mendapatkan lebar layar dan menyesuaikan padding
                   child: Text('Detail'),
                 ),
               ],
@@ -82,9 +88,7 @@ class _RecapContentState extends State<RecapContent> {
           // end toggle button
           Center(
             child: TextButton(
-              onPressed: () {
-                
-              },
+              onPressed: () {},
               child: Text(
                 '01 Apr 2024 - 30 Apr 2024',
                 style: primaryTextStyle,
@@ -96,11 +100,9 @@ class _RecapContentState extends State<RecapContent> {
           ),
           isSelected[0]
               ? Graph(dataMap: dataMap, colorList: colorList)
-              : const DetailList()
+              : const DetailList(),
         ],
       ),
     );
   }
 }
-
-
