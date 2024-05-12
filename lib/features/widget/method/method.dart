@@ -13,35 +13,39 @@ class MethodContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appbar
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(56),
         child: CustomAppBar(
           title: 'Sumber Dana',
         ),
       ),
+      // end appbar
       body: Container(
         decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(9),
+          color: bgColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(9),
+          ),
         ),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      // padding: const EdgeInsets.all(12),
-      width: double.infinity,
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        width: double.infinity,
+        // method list
         child: const MethodList(),
+        // end method list
       ),
-      floatingActionButton: AddButton(onPressed: () {
-        Navigator.of(context).push(
+      // add button
+      floatingActionButton: AddButton(
+        onPressed: () {
+          Navigator.of(context).push(
             MaterialPageRoute<dynamic>(
-              builder: (context) => NewMethodScreen(onPressed: () {
-                
-              },)
-            ),
+                builder: (context) => NewMethodScreen(
+                      onPressed: () {},
+                    )),
           );
-      },),
+        },
+      ),
+      // end add button
     );
   }
 }
-
-

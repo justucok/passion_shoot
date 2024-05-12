@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 class StatusBar extends StatelessWidget {
@@ -18,54 +20,57 @@ class StatusBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       padding: const EdgeInsets.all(12),
       height: 80,
-      width: double.infinity,
+      width: 500,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Pemasukan',
-                style: primaryTextStyle,
-              ),
-              Text(
-                '+ 2.000.000',
-                style: TextStyle(color: succesColor),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Pemasukan',
+                  style: primaryTextStyle,
+                ),
+                Text(
+                  '+ 2.000.000',
+                  style: TextStyle(color: succesColor),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(
-            width: 80,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Pengeluaran',
+                  style: primaryTextStyle,
+                ),
+                Text(
+                  '850.000',
+                  style: TextStyle(color: dangerColor),
+                ),
+              ],
+            ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Pengeluaran',
-                style: primaryTextStyle,
-              ),
-              Text(
-                '850.000',
-                style: TextStyle(color: dangerColor),
-              ),
-            ],
-          ),
-          const SizedBox(
-            width: 80,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Selisih',
-                style: primaryTextStyle,
-              ),
-              Text(
-                '+ 1.150.000',
-                style: primaryTextStyle,
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Selisih',
+                  style: primaryTextStyle,
+                ),
+                Text(
+                  '+ 1.150.000',
+                  style: primaryTextStyle,
+                ),
+              ],
+            ),
           ),
         ],
       ),

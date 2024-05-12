@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/recap/detail_list.dart';
@@ -80,27 +79,13 @@ class _RecapContentState extends State<RecapContent> {
             ),
           ),
           // end toggle button
-          Center(
-            child: TextButton(
-              onPressed: () {
-                
-              },
-              child: Text(
-                '01 Apr 2024 - 30 Apr 2024',
-                style: primaryTextStyle,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
+          // change display
           isSelected[0]
               ? Graph(dataMap: dataMap, colorList: colorList)
               : const DetailList()
+          // end change display
         ],
       ),
     );
   }
 }
-
-

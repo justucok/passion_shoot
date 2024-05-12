@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 class DetailList extends StatelessWidget {
@@ -21,6 +22,12 @@ class DetailList extends StatelessWidget {
         width: double.infinity,
         child: ListView(
           children: [
+            Center(
+              child: Text(
+                '1 May 2024 - 31 May 2024',
+                style: primaryTextStyle.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
             ListTile(
               contentPadding: const EdgeInsets.all(0),
               title: Text(
