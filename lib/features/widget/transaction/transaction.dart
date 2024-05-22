@@ -39,15 +39,17 @@ class _TransactionContentState extends State<TransactionContent> {
         addPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute<dynamic>(
-              builder: (context) => TransactionScreen(onPressed: () {  },)
-            ),
+                builder: (context) => TransactionScreen(
+                      onPressed: () {},
+                    )),
           );
         },
         outPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute<dynamic>(
-              builder: (context) => TransactionScreen(onPressed: () {  },)
-            ),
+                builder: (context) => TransactionScreen(
+                      onPressed: () {},
+                    )),
           );
         },
       ),
