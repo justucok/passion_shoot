@@ -36,20 +36,26 @@ class _TransactionContentState extends State<TransactionContent> {
       ),
       // add button
       floatingActionButton: MultipleButton(
-        addPressed: () {
+        onAddPressed: (int typeid) {
           Navigator.of(context).push(
             MaterialPageRoute<dynamic>(
-                builder: (context) => TransactionScreen(
-                      onPressed: () {},
-                    )),
+              builder: (context) => TransactionScreen(
+                selectedTypeId: typeid, // Meneruskan typeid
+                onPressed: () {},
+                selectedDate: DateTime.now(), // Mengatur selectedDate
+              ),
+            ),
           );
         },
-        outPressed: () {
+        onOutPressed: (int typeid) {
           Navigator.of(context).push(
             MaterialPageRoute<dynamic>(
-                builder: (context) => TransactionScreen(
-                      onPressed: () {},
-                    )),
+              builder: (context) => TransactionScreen(
+                selectedTypeId: typeid, // Meneruskan typeid
+                onPressed: () {},
+                selectedDate: DateTime.now(), // Mengatur selectedDate
+              ),
+            ),
           );
         },
       ),

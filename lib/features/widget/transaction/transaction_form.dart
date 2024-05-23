@@ -1,42 +1,43 @@
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/api/apiservices.dart';
+import 'package:proj_passion_shoot/api/datatransaction.dart';
 import 'package:proj_passion_shoot/api/bank_account.dart';
 import 'package:proj_passion_shoot/api/posttransaksi.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 class TransactionForm extends StatefulWidget {
-  DateTime selectedDate;
-  final int? selectedTypeId;
-  final Function() onPressed;
-  final Function(int) getSelectedTypeId;
+  late final DateTime selectedDate;
+  final int selectedTypeId;
+  final dynamic selectedValue;
+  final dynamic Function() onPressed;
 
   TransactionForm({
     Key? key,
     required this.selectedDate,
     required this.selectedTypeId,
+    this.selectedValue,
     required this.onPressed,
-    required this.getSelectedTypeId,
-    required acData selectedValue,
   }) : super(key: key);
 
   @override
-  State<TransactionForm> createState() => TransactionFormState();
+  _TransactionFormState createState() => _TransactionFormState();
 }
 
-class TransactionFormState extends State<TransactionForm> {
+class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController jumlahController = TextEditingController();
   final TextEditingController judulController = TextEditingController();
   final TextEditingController keteranganController = TextEditingController();
 
   Service serviceAPI = Service();
-  late Future<List<acData>> listpayment;
+  late Future<List<acData>> listPayment;
   acData? selectedPayment;
 
   @override
   void initState() {
     super.initState();
-    listpayment = serviceAPI.getmethodpayment();
+    listPayment = serviceAPI.getmethodpayment();
   }
 
   @override
@@ -44,6 +45,7 @@ class TransactionFormState extends State<TransactionForm> {
     return Form(
       child: Column(
         children: [
+          // Date Picker
           TextFormField(
             controller: TextEditingController(
               text: DateFormat('E, dd MMM yyyy').format(widget.selectedDate),
@@ -70,38 +72,42 @@ class TransactionFormState extends State<TransactionForm> {
             },
           ),
           const SizedBox(height: 6),
+
+          // Dropdown untuk Sumber Dana
           FutureBuilder<List<acData>>(
-            future: listpayment,
+            future: listPayment,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Text('No data available');
               } else {
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return DropdownButtonFormField<acData>(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Sumber Dana',
-                    ),
-                    items: snapshot.data!.map((acData item) {
-                      return DropdownMenuItem<acData>(
-                        value: item,
-                        child: Text(item.cmethod),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedPayment = value;
-                      });
-                    },
-                    value: selectedPayment,
-                  );
-                }
+                return DropdownButtonFormField<acData>(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Sumber Dana',
+                  ),
+                  items: snapshot.data!.map((acData item) {
+                    return DropdownMenuItem<acData>(
+                      value: item,
+                      child: Text(item.cmethod),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedPayment = value;
+                    });
+                  },
+                  value: selectedPayment,
+                );
               }
             },
           ),
           const SizedBox(height: 6),
+
+          // Jumlah
           TextFormField(
             controller: jumlahController,
             decoration: InputDecoration(
@@ -113,6 +119,8 @@ class TransactionFormState extends State<TransactionForm> {
             ),
           ),
           const SizedBox(height: 6),
+
+          // Judul
           TextFormField(
             controller: judulController,
             decoration: InputDecoration(
@@ -123,6 +131,8 @@ class TransactionFormState extends State<TransactionForm> {
             ),
           ),
           const SizedBox(height: 6),
+
+          // Keterangan
           TextFormField(
             controller: keteranganController,
             decoration: InputDecoration(
@@ -133,6 +143,8 @@ class TransactionFormState extends State<TransactionForm> {
             ),
           ),
           const SizedBox(height: 12),
+
+          // Tombol Simpan
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -159,15 +171,13 @@ class TransactionFormState extends State<TransactionForm> {
   void saveTransaction() async {
     if (selectedPayment != null) {
       try {
-        int typeid = widget.selectedTypeId ?? 1;
-        int paymentid = int.parse(selectedPayment!.cid);
         double amount = double.parse(jumlahController.text);
         String title = judulController.text;
         String description = keteranganController.text;
 
         Transaction transaction = Transaction(
-          typeid: typeid,
-          paymentid: paymentid,
+          typeid: widget.selectedTypeId, // Gunakan typeid yang diterima
+          paymentid: int.parse(selectedPayment!.cid),
           amount: amount,
           title: title,
           description: description,
@@ -181,6 +191,9 @@ class TransactionFormState extends State<TransactionForm> {
             content: Text('Transaksi berhasil disimpan!'),
           ),
         );
+
+        // Tampilkan popup berhasil menambahkan
+        _showSuccessDialog();
       } catch (e) {
         print('Gagal menyimpan transaksi: $e');
         ScaffoldMessenger.of(context).showSnackBar(
@@ -196,5 +209,26 @@ class TransactionFormState extends State<TransactionForm> {
         ),
       );
     }
+  }
+
+  // Method untuk menampilkan dialog berhasil menambahkan
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Berhasil'),
+          content: Text('Transaksi berhasil ditambahkan!'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
