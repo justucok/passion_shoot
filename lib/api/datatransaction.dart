@@ -52,4 +52,6 @@ class cData {
 
     return result;
   }
+
+  Object? toJson() {}
 }

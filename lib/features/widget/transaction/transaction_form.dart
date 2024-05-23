@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:proj_passion_shoot/api/apiservices.dart';
+import 'package:proj_passion_shoot/api/bank_account.dart';
+import 'package:proj_passion_shoot/api/datatransaction.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 // ignore: must_be_immutable
@@ -20,6 +23,16 @@ class TransactionForm extends StatefulWidget {
 }
 
 class TransactionFormState extends State<TransactionForm> {
+  Service serviceAPI = Service();
+  late Future<List<acData>> listpayment;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listpayment = serviceAPI.getmethodpayment();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -59,44 +72,39 @@ class TransactionFormState extends State<TransactionForm> {
               borderRadius: BorderRadius.circular(9),
             ),
             padding: const EdgeInsets.all(9),
-            child: DropdownButton(
-              underline: const SizedBox(),
-              icon: const Icon(Icons.arrow_drop_down_rounded),
-              iconSize: 30,
-              hint: const Text('Sumber Dana'),
-              dropdownColor: bgColor,
-              isExpanded: true,
-              borderRadius: BorderRadius.circular(9),
-              style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Uang Tunai',
-                  child: Text('Uang Tunai'),
-                ),
-                DropdownMenuItem(
-                  value: 'Mandiri',
-                  child: Text('Mandiri'),
-                ),
-                DropdownMenuItem(
-                  value: 'BCA',
-                  child: Text('BCA'),
-                ),
-                DropdownMenuItem(
-                  value: 'Dana',
-                  child: Text('Dana'),
-                ),
-              ],
-              value: widget.selectedValue,
-              onChanged: (value) {
-                setState(() {
-                  widget.selectedValue = value;
-                });
+            child: FutureBuilder<List<acData>>(
+              future: listpayment,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Sumber Dana',
+                      ),
+                      items: snapshot.data!.map((acData item) {
+                        return DropdownMenuItem(
+                          value: item,
+                          child: Text(item.cmethod),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          widget.selectedValue = value;
+                        });
+                      },
+                      value: widget.selectedValue,
+                    );
+                  }
+                }
               },
             ),
           ),
-          const SizedBox(
-            height: 6,
-          ),
+          const SizedBox(height: 6),
           TextFormField(
             decoration: InputDecoration(
                 suffixIcon: const Icon(Icons.attach_money_rounded),
