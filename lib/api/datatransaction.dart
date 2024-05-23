@@ -15,8 +15,8 @@ class cData {
     required this.camount,
     required this.ctitle,
     required this.cdescription,
-    required this.ctypeTransaksi,
-    required this.cmethod,
+    this.ctypeTransaksi = '', // Nilai default
+    this.cmethod = '', // Nilai default
   });
 
   @override

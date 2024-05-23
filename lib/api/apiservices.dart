@@ -3,6 +3,7 @@ import 'dart:convert';
 import "package:http/http.dart" as http;
 import 'package:proj_passion_shoot/api/datatransaction.dart';
 import 'package:proj_passion_shoot/api/bank_account.dart';
+import 'package:proj_passion_shoot/api/posttransaksi.dart';
 import 'package:proj_passion_shoot/api/typetransaksi.dart';
 
 class Service {
@@ -43,26 +44,22 @@ class Service {
     }
   }
 
-  // Metode untuk menyimpan transaksi baru ke server
-  Future<void> saveTransaction(cData transaction) async {
+  Future<void> saveTransaction(Transaction transaction) async {
     final response = await http.post(
       Uri.parse('http://10.0.2.2:8000/api/all_transaksi'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, dynamic>{
-        'cid': transaction.cid,
-        'ctypeid': transaction.ctypeid,
-        'cpaymentid': transaction.cpaymentid,
-        'camount': transaction.camount,
-        'ctitle': transaction.ctitle,
-        'cdescription': transaction.cdescription,
-        'ctypeTransaksi': transaction.ctypeTransaksi,
-        'cmethod': transaction.cmethod,
-      }),
+      body: jsonEncode(transaction.toJson()),
     );
 
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print('Berhasil menyimpan transaksi');
+    } else {
+      print('Gagal menyimpan transaksi: ${response.statusCode}');
+      if (response.body.isNotEmpty) {
+        print('Detail Kesalahan: ${response.body}');
+      }
       throw Exception('Failed to save transaction');
     }
   }

@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/api/apiservices.dart';
 import 'package:proj_passion_shoot/api/bank_account.dart';
-import 'package:proj_passion_shoot/api/datatransaction.dart';
-import 'package:proj_passion_shoot/api/typetransaksi.dart';
+import 'package:proj_passion_shoot/api/posttransaksi.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 class TransactionForm extends StatefulWidget {
+  DateTime selectedDate;
+  final int? selectedTypeId;
+  final Function() onPressed;
+  final Function(int) getSelectedTypeId;
+
   TransactionForm({
     Key? key,
     required this.selectedDate,
@@ -15,11 +19,6 @@ class TransactionForm extends StatefulWidget {
     required this.getSelectedTypeId,
     required acData selectedValue,
   }) : super(key: key);
-
-  late final DateTime selectedDate;
-  final int? selectedTypeId;
-  final Function() onPressed;
-  final Function(int) getSelectedTypeId;
 
   @override
   State<TransactionForm> createState() => TransactionFormState();
@@ -157,49 +156,33 @@ class TransactionFormState extends State<TransactionForm> {
     );
   }
 
-  Future<String> getTypeTransaksiById(int id) async {
-    try {
-      List<typeTransaksiData> type = await Service().getTypeTransaksi();
-      typeTransaksiData selectedType =
-          type.firstWhere((element) => element.cid == id.toString());
-      String ctypeid = selectedType.cid;
-      return ctypeid; // Kembalikan ctypeid
-    } catch (e) {
-      print('Gagal mengambil data jenis transaksi: $e');
-      throw e;
-    }
-  }
-
   void saveTransaction() async {
     if (selectedPayment != null) {
       try {
-        String ctypeid = await getTypeTransaksiById(widget.selectedTypeId ??
-            1); // Panggil getTypeTransaksiById dengan parameter yang sesuai
-        cData transaction = cData(
-          ctypeid: ctypeid,
-          cpaymentid: selectedPayment!.cid,
-          camount: jumlahController.text,
-          ctitle: judulController.text,
-          cdescription: keteranganController.text,
-          cid: '',
-          ctypeTransaksi: '',
-          cmethod: '',
+        int typeid = widget.selectedTypeId ?? 1;
+        int paymentid = int.parse(selectedPayment!.cid);
+        double amount = double.parse(jumlahController.text);
+        String title = judulController.text;
+        String description = keteranganController.text;
+
+        Transaction transaction = Transaction(
+          typeid: typeid,
+          paymentid: paymentid,
+          amount: amount,
+          title: title,
+          description: description,
         );
+
         print(transaction);
-        serviceAPI.saveTransaction(transaction).then((_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Transaksi berhasil disimpan!'),
-            ),
-          );
-        }).catchError((error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Gagal menyimpan transaksi: $error'),
-            ),
-          );
-        });
+        await serviceAPI.saveTransaction(transaction);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Transaksi berhasil disimpan!'),
+          ),
+        );
       } catch (e) {
+        print('Gagal menyimpan transaksi: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Gagal menyimpan transaksi: $e'),
