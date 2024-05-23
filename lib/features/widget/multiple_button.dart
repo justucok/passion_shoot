@@ -36,8 +36,13 @@ class MultipleButton extends StatelessWidget {
             // Ketika 'Pemasukan' diklik, panggil addPressed
             if (addPressed != null) {
               addPressed!();
-              // Panggil fungsi getTypeTransaksi dengan id=1
-              getTypeTransaksiById(1); // Memanggil fungsi dengan id=1
+              // Panggil fungsi getTypeTransaksi dengan id=1 dan terima ctypeid
+              getTypeTransaksiById(1).then((ctypeid) {
+                // Lakukan sesuatu dengan nilai ctypeid yang diperoleh
+                print('ctypeid untuk Pemasukan: $ctypeid');
+              }).catchError((error) {
+                print('Error saat mendapatkan ctypeid untuk Pemasukan: $error');
+              });
             }
           },
         ),
@@ -56,8 +61,14 @@ class MultipleButton extends StatelessWidget {
             // Ketika 'Pengeluaran' diklik, panggil outPressed
             if (outPressed != null) {
               outPressed!();
-              // Panggil fungsi getTypeTransaksi dengan id=2
-              getTypeTransaksiById(2); // Memanggil fungsi dengan id=2
+              // Panggil fungsi getTypeTransaksi dengan id=2 dan terima ctypeid
+              getTypeTransaksiById(2).then((ctypeid) {
+                // Lakukan sesuatu dengan nilai ctypeid yang diperoleh
+                print('ctypeid untuk Pengeluaran: $ctypeid');
+              }).catchError((error) {
+                print(
+                    'Error saat mendapatkan ctypeid untuk Pengeluaran: $error');
+              });
             }
           },
         ),
@@ -70,7 +81,7 @@ class MultipleButton extends StatelessWidget {
   }
 
   // Fungsi untuk mengambil data jenis transaksi berdasarkan id
-  void getTypeTransaksiById(int id) async {
+  Future<String> getTypeTransaksiById(int id) async {
     try {
       List<typeTransaksiData> type = await Service().getTypeTransaksi();
       // Filter jenis transaksi berdasarkan id yang sesuai
@@ -78,8 +89,14 @@ class MultipleButton extends StatelessWidget {
           type.firstWhere((element) => element.cid == id.toString());
       // Gunakan data jenis transaksi yang telah dipilih
       print('Jenis transaksi dipilih: ${selectedType.ctype_transaksi}');
+      // Simpan ctypeid sesuai dengan id jenis transaksi yang dipilih
+      String ctypeid = selectedType.cid;
+      // Kembalikan ctypeid
+      return ctypeid;
     } catch (e) {
       print('Gagal mengambil data jenis transaksi: $e');
+      // Jika terjadi kesalahan, lempar kembali error
+      throw e;
     }
   }
 }

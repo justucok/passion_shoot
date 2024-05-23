@@ -3,32 +3,39 @@ import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/api/apiservices.dart';
 import 'package:proj_passion_shoot/api/bank_account.dart';
 import 'package:proj_passion_shoot/api/datatransaction.dart';
+import 'package:proj_passion_shoot/api/typetransaksi.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
-// ignore: must_be_immutable
 class TransactionForm extends StatefulWidget {
   TransactionForm({
-    super.key,
+    Key? key,
     required this.selectedDate,
-    required this.selectedValue,
+    required this.selectedTypeId,
     required this.onPressed,
-  });
+    required this.getSelectedTypeId,
+    required acData selectedValue,
+  }) : super(key: key);
 
-  DateTime selectedDate;
-  dynamic selectedValue;
+  late final DateTime selectedDate;
+  final int? selectedTypeId;
   final Function() onPressed;
+  final Function(int) getSelectedTypeId;
 
   @override
   State<TransactionForm> createState() => TransactionFormState();
 }
 
 class TransactionFormState extends State<TransactionForm> {
+  final TextEditingController jumlahController = TextEditingController();
+  final TextEditingController judulController = TextEditingController();
+  final TextEditingController keteranganController = TextEditingController();
+
   Service serviceAPI = Service();
   late Future<List<acData>> listpayment;
+  acData? selectedPayment;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     listpayment = serviceAPI.getmethodpayment();
   }
@@ -43,18 +50,18 @@ class TransactionFormState extends State<TransactionForm> {
               text: DateFormat('E, dd MMM yyyy').format(widget.selectedDate),
             ),
             readOnly: true,
-            // enabled: false,
             decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.calendar_today),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                fillColor: textColor),
+              suffixIcon: const Icon(Icons.calendar_today),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(9),
+              ),
+            ),
             onTap: () async {
               final dateTime = await showDatePicker(
                 context: context,
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2200),
+                initialDate: widget.selectedDate,
               );
               if (dateTime != null) {
                 setState(() {
@@ -63,79 +70,70 @@ class TransactionFormState extends State<TransactionForm> {
               }
             },
           ),
-          const SizedBox(
-            height: 6,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black54),
-              borderRadius: BorderRadius.circular(9),
-            ),
-            padding: const EdgeInsets.all(9),
-            child: FutureBuilder<List<acData>>(
-              future: listpayment,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+          const SizedBox(height: 6),
+          FutureBuilder<List<acData>>(
+            future: listpayment,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else {
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
                 } else {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Sumber Dana',
-                      ),
-                      items: snapshot.data!.map((acData item) {
-                        return DropdownMenuItem(
-                          value: item,
-                          child: Text(item.cmethod),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          widget.selectedValue = value;
-                        });
-                      },
-                      value: widget.selectedValue,
-                    );
-                  }
+                  return DropdownButtonFormField<acData>(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Sumber Dana',
+                    ),
+                    items: snapshot.data!.map((acData item) {
+                      return DropdownMenuItem<acData>(
+                        value: item,
+                        child: Text(item.cmethod),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedPayment = value;
+                      });
+                    },
+                    value: selectedPayment,
+                  );
                 }
-              },
+              }
+            },
+          ),
+          const SizedBox(height: 6),
+          TextFormField(
+            controller: jumlahController,
+            decoration: InputDecoration(
+              suffixIcon: const Icon(Icons.attach_money_rounded),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(9),
+              ),
+              hintText: 'Jumlah',
             ),
           ),
           const SizedBox(height: 6),
           TextFormField(
+            controller: judulController,
             decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.attach_money_rounded),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                hintText: 'Jumlah'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(9),
+              ),
+              hintText: 'Judul',
+            ),
           ),
-          const SizedBox(
-            height: 6,
-          ),
+          const SizedBox(height: 6),
           TextFormField(
+            controller: keteranganController,
             decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                hintText: 'Judul'),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(9),
+              ),
+              hintText: 'Keterangan',
+            ),
           ),
-          const SizedBox(
-            height: 6,
-          ),
-          TextFormField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                hintText: 'Keterangan'),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -145,7 +143,9 @@ class TransactionFormState extends State<TransactionForm> {
                   borderRadius: BorderRadius.circular(9),
                 ),
               ),
-              onPressed: widget.onPressed,
+              onPressed: () {
+                saveTransaction();
+              },
               child: Text(
                 'Simpan',
                 style: secondaryTextStyle,
@@ -155,5 +155,63 @@ class TransactionFormState extends State<TransactionForm> {
         ],
       ),
     );
+  }
+
+  Future<String> getTypeTransaksiById(int id) async {
+    try {
+      List<typeTransaksiData> type = await Service().getTypeTransaksi();
+      typeTransaksiData selectedType =
+          type.firstWhere((element) => element.cid == id.toString());
+      String ctypeid = selectedType.cid;
+      return ctypeid; // Kembalikan ctypeid
+    } catch (e) {
+      print('Gagal mengambil data jenis transaksi: $e');
+      throw e;
+    }
+  }
+
+  void saveTransaction() async {
+    if (selectedPayment != null) {
+      try {
+        String ctypeid = await getTypeTransaksiById(widget.selectedTypeId ??
+            1); // Panggil getTypeTransaksiById dengan parameter yang sesuai
+        cData transaction = cData(
+          ctypeid: ctypeid,
+          cpaymentid: selectedPayment!.cid,
+          camount: jumlahController.text,
+          ctitle: judulController.text,
+          cdescription: keteranganController.text,
+          cid: '',
+          ctypeTransaksi: '',
+          cmethod: '',
+        );
+        print(transaction);
+        serviceAPI.saveTransaction(transaction).then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Transaksi berhasil disimpan!'),
+            ),
+          );
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Gagal menyimpan transaksi: $error'),
+            ),
+          );
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Gagal menyimpan transaksi: $e'),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Silakan pilih sumber dana terlebih dahulu!'),
+        ),
+      );
+    }
   }
 }

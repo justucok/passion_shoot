@@ -46,7 +46,7 @@ class Service {
   // Metode untuk menyimpan transaksi baru ke server
   Future<void> saveTransaction(cData transaction) async {
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/api/save_transaction'),
+      Uri.parse('http://10.0.2.2:8000/api/all_transaksi'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

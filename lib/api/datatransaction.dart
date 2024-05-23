@@ -19,6 +19,20 @@ class cData {
     required this.cmethod,
   });
 
+  @override
+  String toString() {
+    return 'cData {'
+        '\n  cid: $cid,'
+        '\n  ctypeid: $ctypeid,'
+        '\n  cpaymentid: $cpaymentid,'
+        '\n  camount: ${addDotToNumber(camount)},' // Menggunakan addDotToNumber
+        '\n  ctitle: $ctitle,'
+        '\n  cdescription: $cdescription,'
+        '\n  ctypeTransaksi: $ctypeTransaksi,'
+        '\n  cmethod: $cmethod'
+        '\n}';
+  }
+
   factory cData.fromJson(Map<String, dynamic> json) {
     return cData(
       cid: json['id'].toString(),
@@ -30,12 +44,6 @@ class cData {
       ctypeTransaksi: json['type']['type_transaksi'],
       cmethod: json['payment'] != null ? json['payment']['method'] : '',
     );
-  }
-
-  List<cData> parseDataList(dynamic json) {
-    var list = json['data'] as List;
-    List<cData> dataList = list.map((data) => cData.fromJson(data)).toList();
-    return dataList;
   }
 
   static String addDotToNumber(String numberString) {
