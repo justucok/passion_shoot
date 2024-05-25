@@ -4,11 +4,11 @@ import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
 
 class CardEvent extends StatelessWidget {
   const CardEvent({
-    super.key,
-    required ValueNotifier<List<Event>> selectedEvent,
-  }) : _selectedEvent = selectedEvent;
+    Key? key,
+    required this.selectedEvent,
+  }) : super(key: key);
 
-  final ValueNotifier<List<Event>> _selectedEvent;
+  final ValueNotifier<List<Event>> selectedEvent;
 
   @override
   Widget build(BuildContext context) {

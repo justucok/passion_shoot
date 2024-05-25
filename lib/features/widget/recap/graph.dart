@@ -66,7 +66,8 @@ class _GraphState extends State<Graph> {
         ),
         const SizedBox(height: 20), // Jarak antara chart dan legend
         SizedBox(
-          height: 40 * widget.dataMap.length.toDouble(), // Mengatur tinggi legenda
+          height:
+              40 * widget.dataMap.length.toDouble(), // Mengatur tinggi legenda
           child: ListView.builder(
             itemCount: widget.dataMap.length,
             itemBuilder: (context, index) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:proj_passion_shoot/Provider/date_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:proj_passion_shoot/config/routes/routes.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
@@ -13,12 +15,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      locale: const Locale('id_ID'),
-      debugShowCheckedModeBanner: false,
-      title: 'Passion.Shoot',
-      onGenerateRoute: route.onRoutes,
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: bgColor)),
+    return ChangeNotifierProvider(
+      create: (context) => DateProvider(),
+      child: MaterialApp(
+        locale: const Locale('id_ID'),
+        debugShowCheckedModeBanner: false,
+        title: 'Passion.Shoot',
+        onGenerateRoute: route.onRoutes,
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: bgColor)),
+      ),
     );
   }
 }

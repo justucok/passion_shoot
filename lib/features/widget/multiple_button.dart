@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
+import 'package:proj_passion_shoot/features/data/Type_transaction/typetransaksi.dart'; // Import class typeTransaksiData
 
 class MultipleButton extends StatelessWidget {
   const MultipleButton({
-    super.key,
-    required this.addPressed,
-    required this.outPressed,
-  });
+    Key? key,
+    required this.onAddPressed,
+    required this.onOutPressed,
+  }) : super(key: key);
 
-  final void Function()? addPressed;
-  final void Function()? outPressed;
+  final void Function(int typeid)? onAddPressed;
+  final void Function(int typeid)? onOutPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +22,22 @@ class MultipleButton extends StatelessWidget {
       iconTheme: IconThemeData(color: alternativeColor),
       children: [
         SpeedDialChild(
-            shape: const CircleBorder(),
-            backgroundColor: secondaryColor,
-            labelWidget: Text(
-              'Pemasukan',
-              style: primaryTextStyle,
-            ),
-            child: Icon(
-              Icons.attach_money,
-              color: secondaryTextColor,
-            ),
-            onTap: addPressed),
+          shape: const CircleBorder(),
+          backgroundColor: secondaryColor,
+          labelWidget: Text(
+            'Pemasukan',
+            style: primaryTextStyle,
+          ),
+          child: Icon(
+            Icons.attach_money,
+            color: secondaryTextColor,
+          ),
+          onTap: () {
+            if (onAddPressed != null) {
+              onAddPressed!(1); // Panggil callback dengan typeid 1
+            }
+          },
+        ),
         SpeedDialChild(
           shape: const CircleBorder(),
           backgroundColor: secondaryColor,
@@ -42,7 +49,11 @@ class MultipleButton extends StatelessWidget {
             Icons.shopping_basket,
             color: secondaryTextColor,
           ),
-          onTap: outPressed,
+          onTap: () {
+            if (onOutPressed != null) {
+              onOutPressed!(2); // Panggil callback dengan typeid 2
+            }
+          },
         ),
       ],
       child: Icon(

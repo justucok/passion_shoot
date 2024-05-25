@@ -29,13 +29,13 @@ class DetailList extends StatelessWidget {
               margin: const EdgeInsets.all(4),
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: secondaryTextColor,
-                borderRadius: BorderRadius.circular(9)
-              ),
+                  color: secondaryTextColor,
+                  borderRadius: BorderRadius.circular(9)),
               child: Center(
                 child: Text(
                   '01 May 2024 - 31 May 2024',
-                  style: primaryTextStyle.copyWith(color: primaryColor, fontSize: 16),
+                  style: primaryTextStyle.copyWith(
+                      color: primaryColor, fontSize: 16),
                 ),
               ),
             ),
