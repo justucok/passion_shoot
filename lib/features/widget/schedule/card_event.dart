@@ -4,32 +4,44 @@ import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
 
 class CardEvent extends StatelessWidget {
   const CardEvent({
-    super.key,
-    required ValueNotifier<List<Event>> selectedEvent,
-  }) : _selectedEvent = selectedEvent;
+    Key? key,
+    required this.selectedEvent,
+  }) : super(key: key);
 
-  final ValueNotifier<List<Event>> _selectedEvent;
+  final ValueNotifier<List<Event>> selectedEvent;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ValueListenableBuilder(
-        valueListenable: _selectedEvent,
-        builder: (context, value, child) => ListView.builder(
-          itemCount: value.length,
-          itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: bgColor,
-              ),
-              child: ListTile(
-                title: Text(value[index].title),
-                subtitle: Text(value[index].time),
+      child: ValueListenableBuilder<List<Event>>(
+        valueListenable: selectedEvent,
+        builder: (context, value, child) {
+          if (value.isEmpty) {
+            return Center(
+              child: Text(
+                'Tidak ada event untuk hari ini',
+                style: TextStyle(color: Colors.grey),
               ),
             );
-          },
-        ),
+          } else {
+            return ListView.builder(
+              itemCount: value.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(9),
+                    color: bgColor,
+                  ),
+                  child: ListTile(
+                    title: Text(value[index].title),
+                    subtitle: Text(value[index].time),
+                  ),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }

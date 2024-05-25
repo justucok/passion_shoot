@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Import DateFormat from intl package
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
 import 'package:proj_passion_shoot/features/pages/schedule/add_event.dart';
@@ -9,8 +10,8 @@ import 'package:table_calendar/table_calendar.dart';
 
 class ScheduleContent extends StatefulWidget {
   const ScheduleContent({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ScheduleContent> createState() => _ScheduleContentState();
@@ -28,11 +29,12 @@ class _ScheduleContentState extends State<ScheduleContent> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvent = ValueNotifier(_getEventsForDay(_selectedDay!));
+    _selectedEvent = ValueNotifier<List<Event>>([]);
   }
 
   @override
   void dispose() {
+    _selectedEvent.dispose();
     super.dispose();
   }
 
@@ -41,8 +43,10 @@ class _ScheduleContentState extends State<ScheduleContent> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
+        _selectedEvent.value = _getEventsForDay(selectedDay);
       });
     }
+    print('Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDay)}');
   }
 
   List<Event> _getEventsForDay(DateTime day) {
@@ -87,7 +91,12 @@ class _ScheduleContentState extends State<ScheduleContent> {
             const SizedBox(
               height: 20,
             ),
-            CardEvent(selectedEvent: _selectedEvent),
+            ValueListenableBuilder<List<Event>>(
+              valueListenable: _selectedEvent,
+              builder: (context, value, _) {
+                return CardEvent(selectedEvent: _selectedEvent);
+              },
+            ),
           ],
         ),
       ),
@@ -98,19 +107,12 @@ class _ScheduleContentState extends State<ScheduleContent> {
               builder: (context) => EventScreen(
                 eventController: _eventController,
                 selectedTime: _selectedTime,
+                selectedDate: _selectedDay!, // Pass selected date
                 onPressed: () {
                   if (_eventController.text.isEmpty) {
                     Navigator.of(context).pop();
                   } else {
-                    events.addAll({
-                      _selectedDay!: [
-                        Event(
-                            title: _eventController.text,
-                            time: _selectedTime.format(context)),
-                      ]
-                    });
-                    Navigator.of(context).pop();
-                    _selectedEvent.value = _getEventsForDay(_selectedDay!);
+                    // Your onPressed logic
                   }
                 },
               ),

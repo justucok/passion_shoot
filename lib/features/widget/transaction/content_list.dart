@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/Provider/date_provider.dart';
-import 'package:proj_passion_shoot/api/apiservices.dart';
-import 'package:proj_passion_shoot/api/datatransaction.dart';
+import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
+import 'package:proj_passion_shoot/features/data/transaction/datatransaction.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 

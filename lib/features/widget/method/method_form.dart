@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proj_passion_shoot/api/addpayment.dart';
-import 'package:proj_passion_shoot/api/apiservices.dart';
-import 'package:proj_passion_shoot/api/bank_account.dart';
+import 'package:proj_passion_shoot/features/data/Payment/addpayment.dart';
+import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
+import 'package:proj_passion_shoot/features/data/Payment/bank_account.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 class MethodForm extends StatefulWidget {
@@ -105,9 +105,11 @@ class _MethodFormState extends State<MethodForm> {
               child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(Duration(seconds: 0), () {
                   Navigator.of(context).pop();
                   widget.onPressed(); // Panggil balik ke parent
+                  _navigateToDestinationPage(
+                      context); // Navigasi ke halaman tujuan
                 });
               },
             ),
@@ -115,6 +117,10 @@ class _MethodFormState extends State<MethodForm> {
         );
       },
     );
+  }
+
+  void _navigateToDestinationPage(BuildContext context) {
+    Navigator.pushReplacementNamed(context, '/_HomeScreenState');
   }
 
   @override

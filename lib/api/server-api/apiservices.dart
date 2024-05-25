@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:proj_passion_shoot/api/addpayment.dart';
-import 'package:proj_passion_shoot/api/datatransaction.dart';
-import 'package:proj_passion_shoot/api/bank_account.dart';
-import 'package:proj_passion_shoot/api/posttransaksi.dart';
-import 'package:proj_passion_shoot/api/typetransaksi.dart';
+import 'package:intl/intl.dart';
+import 'package:proj_passion_shoot/features/data/Payment/addpayment.dart';
+import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
+import 'package:proj_passion_shoot/features/data/transaction/datatransaction.dart';
+import 'package:proj_passion_shoot/features/data/Payment/bank_account.dart';
+import 'package:proj_passion_shoot/features/data/transaction/posttransaksi.dart';
+import 'package:proj_passion_shoot/features/data/Type_transaction/typetransaksi.dart';
 
 class Service {
   final String baseUrl = 'http://10.0.2.2:8000/api/';
@@ -88,6 +90,39 @@ class Service {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(transaction.toJson()),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print('Berhasil menyimpan transaksi');
+    } else {
+      print('Gagal menyimpan transaksi: ${response.statusCode}');
+      if (response.body.isNotEmpty) {
+        print('Detail Kesalahan: ${response.body}');
+      }
+      throw Exception('Failed to save transaction');
+    }
+  }
+
+  //EVENT
+
+  Future<List<Event>> getEvents() async {
+    final response = await http.get(Uri.parse('$baseUrl/event'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((event) => Event.fromJson(event)).toList();
+    } else {
+      throw Exception('Failed to load events');
+    }
+  }
+
+  Future<void> createEvent(Event event) async {
+    final response = await http.post(
+      Uri.parse('${baseUrl}event'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(event.toJson()),
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
