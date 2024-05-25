@@ -62,6 +62,9 @@ class _EventScreenState extends State<EventScreen> {
                 readOnly: true,
                 onTap: () async {
                   final TimeOfDay? timeOfDay = await showTimePicker(
+                      builder: (context, child) {
+                        return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                      },
                       context: context,
                       initialTime: widget.selectedTime,
                       initialEntryMode: TimePickerEntryMode.inputOnly);
