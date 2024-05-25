@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/recap/detail_list.dart';
@@ -74,30 +73,18 @@ class _RecapContentState extends State<RecapContent> {
                   padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width *
                           0.14), // Menggunakan MediaQuery untuk mendapatkan lebar layar dan menyesuaikan padding
-                  child: Text('Realtime'),
+                  child: const Text('Realtime'),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width *
                           0.14), // Menggunakan MediaQuery untuk mendapatkan lebar layar dan menyesuaikan padding
-                  child: Text('Detail'),
+                  child: const Text('Detail'),
                 ),
               ],
             ),
           ),
           // end toggle button
-          Center(
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                '01 Apr 2024 - 30 Apr 2024',
-                style: primaryTextStyle,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
           isSelected[0]
               ? Graph(dataMap: dataMap, colorList: colorList)
               : const DetailList(),

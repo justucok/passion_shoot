@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 class DetailList extends StatelessWidget {
@@ -8,8 +10,8 @@ class DetailList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double contentWidth = screenWidth * 0.9; // 90% dari lebar layar
+    // double screenWidth = MediaQuery.of(context).size.width;
+    // double contentWidth = screenWidth * 0.9; // 90% dari lebar layar
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -20,9 +22,23 @@ class DetailList extends StatelessWidget {
         ),
         margin: const EdgeInsets.symmetric(horizontal: 12),
         padding: const EdgeInsets.all(12),
-        width: contentWidth,
+        width: double.infinity,
         child: ListView(
           children: [
+            Container(
+              margin: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                  color: secondaryTextColor,
+                  borderRadius: BorderRadius.circular(9)),
+              child: Center(
+                child: Text(
+                  '01 May 2024 - 31 May 2024',
+                  style: primaryTextStyle.copyWith(
+                      color: primaryColor, fontSize: 16),
+                ),
+              ),
+            ),
             ListTile(
               contentPadding: const EdgeInsets.all(0),
               title: Text(

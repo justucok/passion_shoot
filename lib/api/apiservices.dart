@@ -1,6 +1,6 @@
 import 'dart:convert';
-
-import "package:http/http.dart" as http;
+import 'package:http/http.dart' as http;
+import 'package:proj_passion_shoot/api/addpayment.dart';
 import 'package:proj_passion_shoot/api/datatransaction.dart';
 import 'package:proj_passion_shoot/api/bank_account.dart';
 import 'package:proj_passion_shoot/api/posttransaksi.dart';
@@ -8,6 +8,7 @@ import 'package:proj_passion_shoot/api/typetransaksi.dart';
 
 class Service {
   final String baseUrl = 'http://10.0.2.2:8000/api/';
+
   Future<List<cData>> getallTransaction() async {
     final response = await http.get(Uri.parse('${baseUrl}all_transaksi'));
     if (response.statusCode == 200) {
@@ -15,6 +16,18 @@ class Service {
       return transactions;
     } else {
       throw Exception('Failed to load Data');
+    }
+  }
+
+  Future<List<cData>> getdateallTransaction(DateTime selectedDate) async {
+    final response = await http.get(Uri.parse(
+        '${baseUrl}all_transaksi?date=${selectedDate.toIso8601String()}'));
+
+    if (response.statusCode == 200) {
+      List<cData> transactions = parseDataList(json.decode(response.body));
+      return transactions;
+    } else {
+      throw Exception('Failed to load transactions');
     }
   }
 
@@ -44,9 +57,33 @@ class Service {
     }
   }
 
+  //POST PAYMENTMETHOD
+  Future<void> savePaymentMethod(AddPaymentMethod paymentMethod) async {
+    final response = await http.post(
+      Uri.parse('${baseUrl}payment_method'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(paymentMethod.toJson()),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print('Berhasil menyimpan payment method');
+    } else if (response.statusCode == 409) {
+      throw Exception('Payment method already exists');
+    } else {
+      print('Gagal menyimpan payment method: ${response.statusCode}');
+      if (response.body.isNotEmpty) {
+        print('Detail Kesalahan: ${response.body}');
+      }
+      throw Exception('Failed to save payment method');
+    }
+  }
+
+  //POST PENAMBAHAN TRANSAKSI
   Future<void> saveTransaction(Transaction transaction) async {
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/api/all_transaksi'),
+      Uri.parse('${baseUrl}all_transaksi'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -65,40 +102,29 @@ class Service {
   }
 
   List<cData> parseDataList(dynamic json) {
-    var list =
-        json['data'] as List; // Pastikan untuk mengakses 'data' sebagai List
-    List<cData> dataList = list.map((data) => cData.fromJson(data)).toList();
-    return dataList;
+    if (json['data'] is List) {
+      var list = json['data'] as List;
+      return list.map((data) => cData.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to parse data: JSON is not a list');
+    }
   }
 
   List<acData> parseDataListacc(dynamic json) {
-    try {
-      if (json['success'] == true &&
-          json['data'] != null &&
-          json['data'] is List) {
-        var list = json['data'] as List;
-        List<acData> dataList =
-            list.map((data) => acData.fromJson(data)).toList();
-        return dataList;
-      } else {
-        throw Exception('Invalid JSON structure');
-      }
-    } catch (e) {
-      print('Error parsing payment methods data: $e');
-      throw Exception('Failed to parse payment methods data: $e');
+    if (json['success'] == true && json['data'] is List) {
+      var list = json['data'] as List;
+      return list.map((data) => acData.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to parse payment methods data');
     }
   }
 
   List<typeTransaksiData> parseDataListtype(dynamic json) {
-    if (json['success'] == true &&
-        json['data'] != null &&
-        json['data']['data'] is List) {
+    if (json['success'] == true && json['data']['data'] is List) {
       var list = json['data']['data'] as List;
-      List<typeTransaksiData> dataList =
-          list.map((data) => typeTransaksiData.fromJson(data)).toList();
-      return dataList;
+      return list.map((data) => typeTransaksiData.fromJson(data)).toList();
     } else {
-      throw Exception('Invalid JSON structure');
+      throw Exception('Failed to parse type transactions data');
     }
   }
 }
