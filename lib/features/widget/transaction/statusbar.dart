@@ -1,13 +1,15 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
-import 'package:proj_passion_shoot/features/data/transaction/datatransaction.dart';
-import 'package:proj_passion_shoot/utils/color.dart';
+import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
 
 class StatusBar extends StatefulWidget {
-  const StatusBar({Key? key}) : super(key: key);
+  const StatusBar({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _StatusBarState createState() => _StatusBarState();
 }
 
@@ -23,7 +25,7 @@ class _StatusBarState extends State<StatusBar> {
 
   Future<void> fetchAndCalculateTotalPemasukan() async {
     try {
-      List<cData> transactions = await Service().getallTransaction();
+      List<TransactionData> transactions = await Service().getallTransaction();
       double totalPemasukanTemp = 0;
       double totalPengeluaranTemp = 0;
 
@@ -77,7 +79,7 @@ class _StatusBarState extends State<StatusBar> {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '+ ${cData.addDotToNumber(totalPemasukan.toStringAsFixed(0))}',
+                    '+ ${TransactionData.addDotToNumber(totalPemasukan.toStringAsFixed(0))}',
                     style: TextStyle(color: succesColor),
                   ),
                 ],
@@ -95,8 +97,8 @@ class _StatusBarState extends State<StatusBar> {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '- ${cData.addDotToNumber(totalPengeluaran.toStringAsFixed(0))}',
-                    style: TextStyle(color: errorColor),
+                    '- ${TransactionData.addDotToNumber(totalPengeluaran.toStringAsFixed(0))}',
+                    style: TextStyle(color: dangerColor),
                   ),
                   // Tampilkan jumlah pengeluaran di sini
                 ],
@@ -114,10 +116,10 @@ class _StatusBarState extends State<StatusBar> {
                     style: primaryTextStyle,
                   ),
                   Text(
-                    '${cData.addDotToNumber(selisih.toStringAsFixed(0))}',
+                    TransactionData.addDotToNumber(selisih.toStringAsFixed(0)),
                     style: selisih >= 0
                         ? TextStyle(color: succesColor)
-                        : TextStyle(color: errorColor),
+                        : TextStyle(color: dangerColor),
                   ),
                 ],
               ),

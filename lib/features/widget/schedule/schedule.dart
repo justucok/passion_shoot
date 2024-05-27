@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import DateFormat from intl package
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/pages/schedule/add_event.dart';
 import 'package:proj_passion_shoot/features/widget/add_button.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
@@ -22,14 +22,14 @@ class _ScheduleContentState extends State<ScheduleContent> {
   DateTime? _selectedDay;
   final TimeOfDay _selectedTime = TimeOfDay.now();
   final TextEditingController _eventController = TextEditingController();
-  Map<DateTime, List<Event>> events = {};
-  late final ValueNotifier<List<Event>> _selectedEvent;
+  Map<DateTime, List<PostEvent>> events = {};
+  late final ValueNotifier<List<PostEvent>> _selectedEvent;
 
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvent = ValueNotifier<List<Event>>([]);
+    _selectedEvent = ValueNotifier<List<PostEvent>>([]);
   }
 
   @override
@@ -49,7 +49,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
     print('Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDay)}');
   }
 
-  List<Event> _getEventsForDay(DateTime day) {
+  List<PostEvent> _getEventsForDay(DateTime day) {
     return events[day] ?? [];
   }
 
@@ -91,7 +91,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
             const SizedBox(
               height: 20,
             ),
-            ValueListenableBuilder<List<Event>>(
+            ValueListenableBuilder<List<PostEvent>>(
               valueListenable: _selectedEvent,
               builder: (context, value, _) {
                 return CardEvent(selectedEvent: _selectedEvent);

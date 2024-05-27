@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import DateFormat from intl package
-import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
+import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
-import 'package:proj_passion_shoot/features/pages/home/home.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/schedule/schedule.dart';
 // Import the HomeScreen
 
+// ignore: must_be_immutable
 class EventScreen extends StatefulWidget {
   EventScreen({
-    Key? key,
+    super.key,
     required this.eventController,
     required this.selectedTime,
     required this.selectedDate,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final TextEditingController eventController;
   TimeOfDay selectedTime;
@@ -30,7 +30,7 @@ class _EventScreenState extends State<EventScreen> {
   Service service = Service();
   Future<void> _saveEvent() async {
     try {
-      final newEvent = Event(
+      final newEvent = PostEvent(
         date: DateFormat('yyyy-MM-dd').format(widget.selectedDate),
         title: widget.eventController.text,
         time: DateFormat('HH:mm:ss').format(DateTime(
@@ -45,7 +45,7 @@ class _EventScreenState extends State<EventScreen> {
       await service.createEvent(newEvent);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Event berhasil ditambahkan'),
         ),
       );

@@ -35,7 +35,6 @@ class MethodContent extends StatelessWidget {
         Navigator.of(context).push(
             MaterialPageRoute<dynamic>(
               builder: (context) => NewMethodScreen(onPressed: () {
-                
               },)
             ),
           );

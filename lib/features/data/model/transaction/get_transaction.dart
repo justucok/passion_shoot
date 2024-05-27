@@ -1,4 +1,4 @@
-class cData {
+class TransactionData {
   String cid;
   String ctypeid;
   String cpaymentid;
@@ -8,7 +8,7 @@ class cData {
   String ctypeTransaksi;
   String cmethod;
 
-  cData({
+  TransactionData({
     required this.cid,
     required this.ctypeid,
     required this.cpaymentid,
@@ -21,7 +21,7 @@ class cData {
 
   @override
   String toString() {
-    return 'cData {'
+    return 'TransactionData {'
         '\n  cid: $cid,'
         '\n  ctypeid: $ctypeid,'
         '\n  cpaymentid: $cpaymentid,'
@@ -33,8 +33,8 @@ class cData {
         '\n}';
   }
 
-  factory cData.fromJson(Map<String, dynamic> json) {
-    return cData(
+  factory TransactionData.fromJson(Map<String, dynamic> json) {
+    return TransactionData(
       cid: json['id'].toString(),
       ctypeid: json['typeid'].toString(),
       cpaymentid: json['paymentid'].toString(),
@@ -54,12 +54,14 @@ class cData {
       result = numberString[i] + result;
       count++;
       if (count % 3 == 0 && i != 0) {
-        result = '.' + result;
+        result = '.$result';
       }
     }
 
     return result;
   }
 
-  Object? toJson() {}
+  Object? toJson() {
+    return null;
+  }
 }

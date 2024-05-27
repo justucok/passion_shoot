@@ -4,13 +4,11 @@ import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/transaction/transaction_form.dart';
 
 class TransactionScreen extends StatelessWidget {
-  final dynamic Function() onPressed;
   final DateTime selectedDate;
   final int selectedTypeId;
 
-  TransactionScreen({
+  const TransactionScreen({
     super.key,
-    required this.onPressed,
     required this.selectedDate,
     required this.selectedTypeId,
   });
@@ -34,7 +32,6 @@ class TransactionScreen extends StatelessWidget {
           selectedDate: selectedDate,
           selectedTypeId: selectedTypeId, // Meneruskan typeid
           selectedValue: null,
-          onPressed: onPressed,
         ),
       ),
     );

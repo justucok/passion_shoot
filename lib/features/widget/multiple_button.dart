@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/data/Type_transaction/typetransaksi.dart'; // Import class typeTransaksiData
+// Import class typeTransaksiData
 
 class MultipleButton extends StatelessWidget {
   const MultipleButton({
-    Key? key,
+    super.key,
     required this.onAddPressed,
     required this.onOutPressed,
-  }) : super(key: key);
+  });
 
   final void Function(int typeid)? onAddPressed;
   final void Function(int typeid)? onOutPressed;

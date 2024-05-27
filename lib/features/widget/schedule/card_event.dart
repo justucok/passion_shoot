@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 
 class CardEvent extends StatelessWidget {
   const CardEvent({
-    Key? key,
+    super.key,
     required this.selectedEvent,
-  }) : super(key: key);
+  });
 
-  final ValueNotifier<List<Event>> selectedEvent;
+  final ValueNotifier<List<PostEvent>> selectedEvent;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ValueListenableBuilder(
-        valueListenable: _selectedEvent,
+        valueListenable: selectedEvent,
         builder: (context, value, child) => ListView.builder(
           itemCount: value.length,
           itemBuilder: (context, index) {
