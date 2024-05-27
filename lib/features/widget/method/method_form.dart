@@ -1,18 +1,18 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
-import 'package:proj_passion_shoot/features/data/Payment/addpayment.dart';
-import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
-import 'package:proj_passion_shoot/features/data/Payment/bank_account.dart';
+import 'package:proj_passion_shoot/features/data/model/payment/post_payment_method.dart';
+import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'package:proj_passion_shoot/features/data/model/payment/get_payment_method.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 class MethodForm extends StatefulWidget {
   const MethodForm({
-    Key? key,
-    required this.onPressed,
-  }) : super(key: key);
-
-  final Function() onPressed;
+    super.key,
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _MethodFormState createState() => _MethodFormState();
 }
 
@@ -33,7 +33,7 @@ class _MethodFormState extends State<MethodForm> {
 
       try {
         // Ambil data metode pembayaran yang sudah ada dari database
-        List<acData> existingMethods = await _service.getmethodpayment();
+        List<PaymentData> existingMethods = await _service.getmethodpayment();
 
         // Periksa apakah data yang dimasukkan sudah ada dalam data yang sudah ada,
         // tanpa memperhatikan perbedaan huruf besar atau kecil
@@ -45,8 +45,8 @@ class _MethodFormState extends State<MethodForm> {
           _tampilkanDialogDuplikasi();
         } else {
           // Jika belum ada, simpan data
-          AddPaymentMethod metodePembayaranBaru =
-              AddPaymentMethod(method: namamethod);
+          PostPaymentMethod metodePembayaranBaru =
+              PostPaymentMethod(method: namamethod);
 
           try {
             await _service.savePaymentMethod(metodePembayaranBaru);
@@ -78,11 +78,11 @@ class _MethodFormState extends State<MethodForm> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text('Metode pembayaran sudah ada!'),
+          title: const Text('Error'),
+          content: const Text('Metode pembayaran sudah ada!'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -98,16 +98,15 @@ class _MethodFormState extends State<MethodForm> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Berhasil'),
-          content: Text('Metode pembayaran berhasil disimpan!'),
+          title: const Text('Berhasil'),
+          content: const Text('Metode pembayaran berhasil disimpan!'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
-                Future.delayed(Duration(seconds: 0), () {
-                  Navigator.of(context).pop();
-                  widget.onPressed(); // Panggil balik ke parent
+                Future.delayed(const Duration(seconds: 0), () {
+                  Navigator.of(context).pop();// Panggil balik ke parent
                   _navigateToDestinationPage(
                       context); // Navigasi ke halaman tujuan
                 });

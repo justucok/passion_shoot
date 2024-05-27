@@ -41,7 +41,6 @@ class _TransactionContentState extends State<TransactionContent> {
             MaterialPageRoute<dynamic>(
               builder: (context) => TransactionScreen(
                 selectedTypeId: typeid, // Meneruskan typeid
-                onPressed: () {},
                 selectedDate: DateTime.now(), // Mengatur selectedDate
               ),
             ),
@@ -52,7 +51,6 @@ class _TransactionContentState extends State<TransactionContent> {
             MaterialPageRoute<dynamic>(
               builder: (context) => TransactionScreen(
                 selectedTypeId: typeid, // Meneruskan typeid
-                onPressed: () {},
                 selectedDate: DateTime.now(), // Mengatur selectedDate
               ),
             ),

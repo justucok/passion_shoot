@@ -23,7 +23,7 @@ class NewMethodScreen extends StatelessWidget {
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         width: double.infinity,
-        child: MethodForm(onPressed: onPressed),
+        child: const MethodForm(),
       ),
     );
   }

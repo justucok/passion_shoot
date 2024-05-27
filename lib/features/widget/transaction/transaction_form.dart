@@ -1,27 +1,28 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
-import 'package:proj_passion_shoot/features/data/transaction/datatransaction.dart';
-import 'package:proj_passion_shoot/features/data/Payment/bank_account.dart';
-import 'package:proj_passion_shoot/features/data/transaction/posttransaksi.dart';
+import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'package:proj_passion_shoot/features/data/model/payment/get_payment_method.dart';
+import 'package:proj_passion_shoot/features/data/model/transaction/post_transaction.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
+// ignore: must_be_immutable
 class TransactionForm extends StatefulWidget {
-  late final DateTime selectedDate;
+  DateTime selectedDate;
   final int selectedTypeId;
   final dynamic selectedValue;
-  final dynamic Function() onPressed;
 
   TransactionForm({
-    Key? key,
+    super.key,
     required this.selectedDate,
     required this.selectedTypeId,
     this.selectedValue,
-    required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _TransactionFormState createState() => _TransactionFormState();
 }
 
@@ -31,8 +32,8 @@ class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController keteranganController = TextEditingController();
 
   Service serviceAPI = Service();
-  late Future<List<acData>> listPayment;
-  acData? selectedPayment;
+  late Future<List<PaymentData>> listPayment;
+  PaymentData? selectedPayment;
 
   @override
   void initState() {
@@ -74,33 +75,40 @@ class _TransactionFormState extends State<TransactionForm> {
           const SizedBox(height: 6),
 
           // Dropdown untuk Sumber Dana
-          FutureBuilder<List<acData>>(
+          FutureBuilder<List<PaymentData>>(
             future: listPayment,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Text('No data available');
+                return const Text('No data available');
               } else {
-                return DropdownButtonFormField<acData>(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Sumber Dana',
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black54),
+                    borderRadius: BorderRadius.circular(9),
                   ),
-                  items: snapshot.data!.map((acData item) {
-                    return DropdownMenuItem<acData>(
-                      value: item,
-                      child: Text(item.cmethod),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPayment = value;
-                    });
-                  },
-                  value: selectedPayment,
+                  padding: const EdgeInsets.all(9),
+                  child: DropdownButtonFormField<PaymentData>(
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Sumber Dana',
+                    ),
+                    items: snapshot.data!.map((PaymentData item) {
+                      return DropdownMenuItem<PaymentData>(
+                        value: item,
+                        child: Text(item.cmethod),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedPayment = value;
+                      });
+                    },
+                    value: selectedPayment,
+                  ),
                 );
               }
             },
@@ -187,8 +195,9 @@ class _TransactionFormState extends State<TransactionForm> {
         print(transaction);
         await serviceAPI.saveTransaction(transaction);
 
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Transaksi berhasil disimpan!'),
           ),
         );
@@ -197,6 +206,7 @@ class _TransactionFormState extends State<TransactionForm> {
         _showSuccessDialog();
       } catch (e) {
         print('Gagal menyimpan transaksi: $e');
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Gagal menyimpan transaksi: $e'),
@@ -205,7 +215,7 @@ class _TransactionFormState extends State<TransactionForm> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Silakan pilih sumber dana terlebih dahulu!'),
         ),
       );
@@ -218,11 +228,11 @@ class _TransactionFormState extends State<TransactionForm> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Berhasil'),
-          content: Text('Transaksi berhasil ditambahkan!'),
+          title: const Text('Berhasil'),
+          content: const Text('Transaksi berhasil ditambahkan!'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },

@@ -1,7 +1,7 @@
-class AddPaymentMethod {
+class PostPaymentMethod{
   final String method;
 
-  AddPaymentMethod({required this.method});
+  PostPaymentMethod({required this.method});
 
   Map<String, dynamic> toJson() {
     return {
