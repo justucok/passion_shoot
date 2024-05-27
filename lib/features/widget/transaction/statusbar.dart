@@ -69,6 +69,7 @@ class _StatusBarState extends State<StatusBar> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
+              //pemasukan status bar
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -86,6 +87,7 @@ class _StatusBarState extends State<StatusBar> {
             SizedBox(
               width: screenWidth * 0.05,
             ),
+            //pengeluaran status bar
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -106,6 +108,7 @@ class _StatusBarState extends State<StatusBar> {
               width: screenWidth * 0.05,
             ),
             Expanded(
+              //SELISIH SALDO status bar
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

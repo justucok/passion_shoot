@@ -41,14 +41,17 @@ class _ContentListState extends State<ContentList> {
               itemBuilder: (context, index) {
                 final cData data = isiData[index];
                 return ListTile(
+                  //TITLE DARI ITEM
                   title: Text(
                     data.ctitle, // Menggunakan title dari cData
                     style: primaryTextStyle,
                   ),
+                  //Keterangan DARI ITEM
                   subtitle: Text(
                     data.cdescription, // Menggunakan description dari cData
                     style: const TextStyle(color: Colors.grey),
                   ),
+                  //Jumlah Uang DARI ITEM
                   trailing: Text(
                     '${data.ctypeid == '1' || data.ctypeTransaksi == 'Pemasukan' ? '+' : '-'} ${cData.addDotToNumber(data.camount)}',
                     style: primaryTextStyle.copyWith(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
+import 'package:proj_passion_shoot/features/data/event_calender/get%20event.dart';
 
 class CardEvent extends StatelessWidget {
   const CardEvent({
@@ -8,15 +8,15 @@ class CardEvent extends StatelessWidget {
     required this.selectedEvent,
   }) : super(key: key);
 
-  final ValueNotifier<List<Event>> selectedEvent;
+  final ValueNotifier<List<GetEvent>> selectedEvent;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ValueListenableBuilder<List<Event>>(
+      child: ValueListenableBuilder<List<GetEvent>>(
         valueListenable: selectedEvent,
-        builder: (context, value, child) {
-          if (value.isEmpty) {
+        builder: (context, events, _) {
+          if (events.isEmpty) {
             return Center(
               child: Text(
                 'Tidak ada event untuk hari ini',
@@ -25,7 +25,7 @@ class CardEvent extends StatelessWidget {
             );
           } else {
             return ListView.builder(
-              itemCount: value.length,
+              itemCount: events.length,
               itemBuilder: (context, index) {
                 return Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
@@ -34,8 +34,8 @@ class CardEvent extends StatelessWidget {
                     color: bgColor,
                   ),
                   child: ListTile(
-                    title: Text(value[index].title),
-                    subtitle: Text(value[index].time),
+                    title: Text(events[index].title),
+                    subtitle: Text(events[index].time),
                   ),
                 );
               },

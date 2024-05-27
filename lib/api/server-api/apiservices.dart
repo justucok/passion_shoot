@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/features/data/Payment/addpayment.dart';
 import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
+import 'package:proj_passion_shoot/features/data/event_calender/get%20event.dart';
 import 'package:proj_passion_shoot/features/data/transaction/datatransaction.dart';
 import 'package:proj_passion_shoot/features/data/Payment/bank_account.dart';
 import 'package:proj_passion_shoot/features/data/transaction/posttransaksi.dart';
@@ -104,13 +105,14 @@ class Service {
   }
 
   //EVENT
-
-  Future<List<Event>> getEvents() async {
-    final response = await http.get(Uri.parse('$baseUrl/event'));
+  Future<List<GetEvent>> getEvents() async {
+    final response = await http.get(Uri.parse('${baseUrl}event'));
 
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((event) => Event.fromJson(event)).toList();
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      List<dynamic> eventList =
+          jsonResponse['data']['data']; // Akses ke data yang benar
+      return eventList.map((event) => GetEvent.fromJson(event)).toList();
     } else {
       throw Exception('Failed to load events');
     }

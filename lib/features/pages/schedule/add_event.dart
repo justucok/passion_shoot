@@ -18,8 +18,8 @@ class EventScreen extends StatefulWidget {
   }) : super(key: key);
 
   final TextEditingController eventController;
-  TimeOfDay selectedTime;
-  DateTime selectedDate;
+  TimeOfDay selectedTime; //menyimpan time
+  DateTime selectedDate; // menyimpan date
   void Function()? onPressed;
 
   @override

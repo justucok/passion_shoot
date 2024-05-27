@@ -168,6 +168,7 @@ class _TransactionFormState extends State<TransactionForm> {
     );
   }
 
+//function untuk menyimpan transaksi yang di inputkan
   void saveTransaction() async {
     if (selectedPayment != null) {
       try {

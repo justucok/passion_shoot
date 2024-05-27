@@ -34,6 +34,7 @@ class _MethodListState extends State<MethodList> {
         } else if (paymentSnapshot.hasError) {
           return Text('Error: ${paymentSnapshot.error}');
         } else {
+          //keadaan awal nilai dari total saldo
           double totalSaldo = 0;
           return FutureBuilder<List<cData>>(
             future: transactions,
@@ -71,6 +72,7 @@ class _MethodListState extends State<MethodList> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     ListTile(
+                      // ROW dari Total saldo
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -81,6 +83,7 @@ class _MethodListState extends State<MethodList> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          // Jumlah NILAI TOTAL SALDO
                           Text(
                             '${cData.addDotToNumber(totalSaldo.toStringAsFixed(0))}',
                             style: TextStyle(
@@ -93,6 +96,7 @@ class _MethodListState extends State<MethodList> {
                       ),
                       trailing: SizedBox.shrink(),
                     ),
+                    //penghitungan dari total saldo
                     ...paymentSnapshot.data!.map((paymentMethod) {
                       var transactionsForMethod = snapshot.data!
                           .where((transaction) =>
@@ -115,16 +119,20 @@ class _MethodListState extends State<MethodList> {
                                   ? double.parse(transaction.camount)
                                   : 0));
 
+                      //hasil final dari total saldo
                       double finalAmount = totalAmount1 - totalAmount2;
 
+                      // LIST dari Method Payment dari API example (BCA, BRI, dll )
                       return ListTile(
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            //METHODE PAYMENT
                             Text(
                               paymentMethod.cmethod,
                               style: primaryTextStyle,
                             ),
+                            // Total  Saldo Saat ini dari setiap rekening
                             Text(
                               '${cData.addDotToNumber(finalAmount.toStringAsFixed(0))}',
                               style: primaryTextStyle.copyWith(
