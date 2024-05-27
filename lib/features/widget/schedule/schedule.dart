@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import DateFormat from intl package
-import 'package:proj_passion_shoot/api/server-api/apiservices.dart';
+
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
+import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/get%20event.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/pages/schedule/add_event.dart';
 import 'package:proj_passion_shoot/features/widget/add_button.dart';
@@ -41,7 +43,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
 
   Future<void> fetchEvents() async {
     try {
-      List<GetEvent> eventList = await Service().getEvents();
+      List<GetEvent> eventList = (await Service().getEvents()).cast<GetEvent>();
       Map<DateTime, List<GetEvent>> mappedEvents = {};
 
       for (var event in eventList) {
@@ -53,7 +55,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
       }
 
       setState(() {
-        events = mappedEvents;
+        events = mappedEvents.cast<DateTime, List<PostEvent>>();
         _selectedEvent.value = _getEventsForDay(_selectedDay!);
       });
     } catch (e) {

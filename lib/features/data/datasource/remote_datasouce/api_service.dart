@@ -1,22 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-<<<<<<< HEAD:lib/api/server-api/apiservices.dart
-import 'package:intl/intl.dart';
-import 'package:proj_passion_shoot/features/data/Payment/addpayment.dart';
-import 'package:proj_passion_shoot/features/data/event_calender/event.dart';
-import 'package:proj_passion_shoot/features/data/event_calender/get%20event.dart';
-import 'package:proj_passion_shoot/features/data/transaction/datatransaction.dart';
-import 'package:proj_passion_shoot/features/data/Payment/bank_account.dart';
-import 'package:proj_passion_shoot/features/data/transaction/posttransaksi.dart';
-import 'package:proj_passion_shoot/features/data/Type_transaction/typetransaksi.dart';
-=======
 import 'package:proj_passion_shoot/features/data/model/payment/post_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/get_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/post_transaction.dart';
 import 'package:proj_passion_shoot/features/data/model/type_transaction/type_transaction.dart';
->>>>>>> 24b768218f45d3a705efb7b4ac9605a281a3f8c6:lib/features/data/datasource/remote_datasouce/api_service.dart
 
 class Service {
   final String baseUrl = 'http://10.0.2.2:8000/api/';
@@ -24,19 +13,22 @@ class Service {
   Future<List<TransactionData>> getallTransaction() async {
     final response = await http.get(Uri.parse('${baseUrl}all_transaksi'));
     if (response.statusCode == 200) {
-      List<TransactionData> transactions = parseDataList(json.decode(response.body));
+      List<TransactionData> transactions =
+          parseDataList(json.decode(response.body));
       return transactions;
     } else {
       throw Exception('Failed to load Data');
     }
   }
 
-  Future<List<TransactionData>> getdateallTransaction(DateTime selectedDate) async {
+  Future<List<TransactionData>> getdateallTransaction(
+      DateTime selectedDate) async {
     final response = await http.get(Uri.parse(
         '${baseUrl}all_transaksi?date=${selectedDate.toIso8601String()}'));
 
     if (response.statusCode == 200) {
-      List<TransactionData> transactions = parseDataList(json.decode(response.body));
+      List<TransactionData> transactions =
+          parseDataList(json.decode(response.body));
       return transactions;
     } else {
       throw Exception('Failed to load transactions');
@@ -47,7 +39,8 @@ class Service {
     try {
       final response = await http.get(Uri.parse('${baseUrl}payment_method'));
       if (response.statusCode == 200) {
-        List<PaymentData> payments = parseDataListacc(json.decode(response.body));
+        List<PaymentData> payments =
+            parseDataListacc(json.decode(response.body));
         return payments;
       } else {
         throw Exception('Failed to load Data: ${response.statusCode}');
@@ -114,32 +107,17 @@ class Service {
   }
 
   //EVENT
-<<<<<<< HEAD:lib/api/server-api/apiservices.dart
-  Future<List<GetEvent>> getEvents() async {
-    final response = await http.get(Uri.parse('${baseUrl}event'));
+
+  Future<List<PostEvent>> getEvents() async {
+    final response = await http.get(Uri.parse('$baseUrl/event'));
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> jsonResponse = json.decode(response.body);
-      List<dynamic> eventList =
-          jsonResponse['data']['data']; // Akses ke data yang benar
-      return eventList.map((event) => GetEvent.fromJson(event)).toList();
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((event) => PostEvent.fromJson(event)).toList();
     } else {
       throw Exception('Failed to load events');
     }
   }
-=======
-
-  // Future<List<Event>> getEvents() async {
-  //   final response = await http.get(Uri.parse('$baseUrl/event'));
-
-  //   if (response.statusCode == 200) {
-  //     List jsonResponse = json.decode(response.body);
-  //     return jsonResponse.map((event) => Event.fromJson(event)).toList();
-  //   } else {
-  //     throw Exception('Failed to load events');
-  //   }
-  // }
->>>>>>> 24b768218f45d3a705efb7b4ac9605a281a3f8c6:lib/features/data/datasource/remote_datasouce/api_service.dart
 
   Future<void> createEvent(PostEvent event) async {
     final response = await http.post(
