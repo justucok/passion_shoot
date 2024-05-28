@@ -21,9 +21,9 @@ class _RecapContentState extends State<RecapContent> {
   bool isLoading = true;
 
   final colorList = <Color>[
-    succesColor,
-    primaryColor,
-    dangerColor,
+    incomeColor,
+    expansesColor,
+    balanceColor,
   ];
 
   @override
