@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:proj_passion_shoot/features/data/model/event_calender/get%20event.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/post_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
@@ -108,13 +109,19 @@ class Service {
 
   //EVENT
 
-  Future<List<PostEvent>> getEvents() async {
-    final response = await http.get(Uri.parse('$baseUrl/event'));
-
+  Future<List<GetEvent>> getEvents() async {
+    final response = await http.get(Uri.parse('${baseUrl}event'));
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((event) => PostEvent.fromJson(event)).toList();
+      var jsonResponse = json.decode(response.body);
+      try {
+        return GetEvent.parseDataList(jsonResponse);
+      } catch (e) {
+        print('Error parsing JSON: $e');
+        throw Exception('Failed to parse events');
+      }
     } else {
+      print('Failed to load events: ${response.statusCode}');
+      print('Response body: ${response.body}');
       throw Exception('Failed to load events');
     }
   }

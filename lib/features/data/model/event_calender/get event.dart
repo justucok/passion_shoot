@@ -1,8 +1,8 @@
 class GetEvent {
-  final String id;
-  final String date;
-  final String title;
-  final String time;
+  String id;
+  String date;
+  String title;
+  String time;
 
   GetEvent({
     required this.id,
@@ -14,18 +14,25 @@ class GetEvent {
   factory GetEvent.fromJson(Map<String, dynamic> json) {
     return GetEvent(
       id: json['id'].toString(),
-      date: json['date'],
+      date: json['date'].toString(),
       title: json['title'],
-      time: json['time'],
+      time: json['time'].toString(),
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'date': date,
-      'title': title,
-      'time': time,
-    };
+  static List<GetEvent> parseDataList(dynamic json) {
+    if (json['success'] == true &&
+        json['data'] != null &&
+        json['data']['data'] is List) {
+      var list = json['data']['data'] as List;
+      return list.map((data) => GetEvent.fromJson(data)).toList();
+    } else {
+      throw Exception('Invalid JSON structure');
+    }
+  }
+
+  @override
+  String toString() {
+    return 'GetEvent{id: $id, date: $date, title: $title, time: $time}';
   }
 }

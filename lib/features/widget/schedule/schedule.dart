@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Import DateFormat from intl package
-
+import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/get%20event.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/pages/schedule/add_event.dart';
@@ -10,6 +8,9 @@ import 'package:proj_passion_shoot/features/widget/add_button.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/schedule/card_event.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ScheduleContent extends StatefulWidget {
   const ScheduleContent({
@@ -25,42 +26,49 @@ class _ScheduleContentState extends State<ScheduleContent> {
   DateTime? _selectedDay;
   final TimeOfDay _selectedTime = TimeOfDay.now();
   final TextEditingController _eventController = TextEditingController();
-  Map<DateTime, List<PostEvent>> events = {};
-  late final ValueNotifier<List<PostEvent>> _selectedEvent;
+  Map<DateTime, List<GetEvent>> events = {};
+  late final ValueNotifier<List<GetEvent>> _selectedEvent;
+  final Service _service = Service(); // Membuat instance dari kelas Service
 
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvent = ValueNotifier<List<PostEvent>>([]);
+    _selectedEvent = ValueNotifier<List<GetEvent>>([]);
+    _fetchAndSetEvents();
   }
 
-  @override
-  void dispose() {
-    _selectedEvent.dispose();
-    super.dispose();
-  }
-
-  Future<void> fetchEvents() async {
+  Future<void> _fetchAndSetEvents() async {
     try {
-      List<GetEvent> eventList = (await Service().getEvents()).cast<GetEvent>();
-      Map<DateTime, List<GetEvent>> mappedEvents = {};
+      List<GetEvent> eventList = await _service.getEvents();
+      print('Data acara yang diterima:');
+      for (var event in eventList) {
+        print(
+            event); // Mencetak data acara yang diterima dengan informasi yang lebih detail
+      }
+
+      Map<DateTime, List<GetEvent>> eventMap = {};
 
       for (var event in eventList) {
         DateTime eventDate = DateTime.parse(event.date);
-        if (mappedEvents[eventDate] == null) {
-          mappedEvents[eventDate] = [];
+        if (eventMap.containsKey(eventDate)) {
+          eventMap[eventDate]!.add(event);
+        } else {
+          eventMap[eventDate] = [event];
         }
-        mappedEvents[eventDate]!.add(event);
       }
 
       setState(() {
-        events = mappedEvents.cast<DateTime, List<PostEvent>>();
+        events = eventMap;
         _selectedEvent.value = _getEventsForDay(_selectedDay!);
       });
     } catch (e) {
       print('Error fetching events: $e');
     }
+  }
+
+  List<GetEvent> _getEventsForDay(DateTime day) {
+    return events[day] ?? [];
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -72,10 +80,6 @@ class _ScheduleContentState extends State<ScheduleContent> {
       });
     }
     print('Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDay)}');
-  }
-
-  List<PostEvent> _getEventsForDay(DateTime day) {
-    return events[day] ?? [];
   }
 
   @override
@@ -116,7 +120,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
             const SizedBox(
               height: 20,
             ),
-            ValueListenableBuilder<List<PostEvent>>(
+            ValueListenableBuilder<List<GetEvent>>(
               valueListenable: _selectedEvent,
               builder: (context, value, _) {
                 return CardEvent(selectedEvent: _selectedEvent);
@@ -132,13 +136,15 @@ class _ScheduleContentState extends State<ScheduleContent> {
               builder: (context) => EventScreen(
                 eventController: _eventController,
                 selectedTime: _selectedTime,
-                selectedDate: _selectedDay!, // Pass selected date
+                selectedDate: _selectedDay!, // Kirim tanggal yang dipilih
                 onPressed: () {
-                  if (_eventController.text.isEmpty) {
-                    Navigator.of(context).pop();
-                  } else {
-                    // Your onPressed logic
-                  }
+                  // Logic untuk menambah event baru
+                  PostEvent newEvent = PostEvent(
+                    date: DateFormat('yyyy-MM-dd').format(_selectedDay!),
+                    title: _eventController.text,
+                    time: _selectedTime.format(context),
+                  );
+                  postDataToServer(newEvent);
                 },
               ),
             ),
@@ -146,5 +152,31 @@ class _ScheduleContentState extends State<ScheduleContent> {
         },
       ),
     );
+  }
+
+  void postDataToServer(PostEvent event) async {
+    final String url =
+        'http://localhost:8000/api/event'; // Ganti dengan URL API Anda
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(event.toJson()),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Data berhasil dipost ke server');
+        _fetchAndSetEvents(); // Refresh events after posting new event
+      } else {
+        throw Exception(
+            'Gagal memposting data ke server: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Terjadi kesalahan saat memposting data');
+    }
   }
 }

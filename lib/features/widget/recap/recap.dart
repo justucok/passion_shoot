@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
+import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/recap/detail_list.dart';
 import 'package:proj_passion_shoot/features/widget/recap/graph.dart';
@@ -14,11 +15,13 @@ class RecapContent extends StatefulWidget {
 }
 
 class _RecapContentState extends State<RecapContent> {
+  Service serviceAPI = Service();
+
   List<bool> isSelected = [true, false];
   final dataMap = <String, double>{
-    'Sisa Saldo': 57,
-    'Belanja Bulanan': 25,
-    'Jajan': 18,
+    'Income': 57,
+    'Expenses': 25,
+    'Balance': 18,
   };
 
   final colorList = <Color>[
