@@ -61,6 +61,8 @@ class _ScheduleContentState extends State<ScheduleContent> {
       setState(() {
         events = eventMap;
         _selectedEvent.value = _getEventsForDay(_selectedDay!);
+        _selectedEvent.value = eventList;
+        print("Updated _selectedEvent: ${_selectedEvent.value}");
       });
     } catch (e) {
       print('Error fetching events: $e');

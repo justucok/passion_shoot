@@ -16,6 +16,8 @@ class CardEvent extends StatelessWidget {
       child: ValueListenableBuilder<List<GetEvent>>(
         valueListenable: selectedEvent,
         builder: (context, value, child) {
+          print(
+              "ValueListenableBuilder value: $value"); // Tambahkan log di sini
           if (value.isEmpty) {
             return Center(child: Text("Tidak ada acara"));
           }
