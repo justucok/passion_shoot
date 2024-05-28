@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/recap/detail_list.dart';
 import 'package:proj_passion_shoot/features/widget/recap/graph.dart';
@@ -18,12 +19,13 @@ class _RecapContentState extends State<RecapContent> {
   Service serviceAPI = Service();
   List<bool> isSelected = [true, false];
   Map<String, double> dataMap = {'Income': 0, 'Expenses': 0, 'Balance': 0};
+  List<TransactionData> transactions = [];
   bool isLoading = true;
 
   final colorList = <Color>[
-    incomeColor,
-    expansesColor,
-    balanceColor,
+    succesColor,
+    primaryColor,
+    dangerColor,
   ];
 
   @override
@@ -34,11 +36,11 @@ class _RecapContentState extends State<RecapContent> {
 
   Future<void> fetchTransactions() async {
     try {
-      final transactions = await serviceAPI.getallTransaction();
+      final fetchedTransactions = await serviceAPI.getallTransaction();
       double income = 0;
       double expenses = 0;
 
-      for (var transaction in transactions) {
+      for (var transaction in fetchedTransactions) {
         double amount = double.tryParse(transaction.camount) ?? 0;
 
         if (transaction.ctypeid == '1') {
@@ -52,6 +54,7 @@ class _RecapContentState extends State<RecapContent> {
       double balance = income - expenses;
 
       setState(() {
+        transactions = fetchedTransactions;
         dataMap = {
           'Income': (total != 0) ? (income / total) * 100 : 0,
           'Expenses': (total != 0) ? (expenses / total) * 100 : 0,
@@ -124,7 +127,7 @@ class _RecapContentState extends State<RecapContent> {
                 // end toggle button
                 isSelected[0]
                     ? Graph(dataMap: dataMap, colorList: colorList)
-                    : const DetailList(),
+                    : DetailList(transactions: transactions),
               ],
             ),
     );
