@@ -125,7 +125,20 @@ class _ScheduleContentState extends State<ScheduleContent> {
             ValueListenableBuilder<List<GetEvent>>(
               valueListenable: _selectedEvent,
               builder: (context, value, _) {
-                return CardEvent(selectedEvent: _selectedEvent);
+                // Filter events based on selected date
+                List<GetEvent> selectedEvents = value
+                    .where((event) =>
+                        DateFormat('yyyy-MM-dd')
+                            .format(DateTime.parse(event.date)) ==
+                        DateFormat('yyyy-MM-dd').format(_selectedDay!))
+                    .toList();
+
+                // Buat ValueNotifier baru dengan daftar acara yang telah difilter
+                ValueNotifier<List<GetEvent>> filteredEventsNotifier =
+                    ValueNotifier<List<GetEvent>>(selectedEvents);
+
+                // Pass filteredEventsNotifier ke CardEvent
+                return CardEvent(selectedEvent: filteredEventsNotifier);
               },
             ),
           ],
@@ -138,15 +151,16 @@ class _ScheduleContentState extends State<ScheduleContent> {
               builder: (context) => EventScreen(
                 eventController: _eventController,
                 selectedTime: _selectedTime,
-                selectedDate: _selectedDay!, // Kirim tanggal yang dipilih
+                selectedDate: _selectedDay!,
                 onPressed: () {
-                  // Logic untuk menambah event baru
+                  // Call postDataToServer from Service class
                   PostEvent newEvent = PostEvent(
                     date: DateFormat('yyyy-MM-dd').format(_selectedDay!),
                     title: _eventController.text,
                     time: _selectedTime.format(context),
                   );
-                  postDataToServer(newEvent);
+                  _service.postDataToServer(newEvent); // Call the method here
+                  _fetchAndSetEvents(); // Refresh events after posting new event
                 },
               ),
             ),
@@ -154,31 +168,5 @@ class _ScheduleContentState extends State<ScheduleContent> {
         },
       ),
     );
-  }
-
-  void postDataToServer(PostEvent event) async {
-    final String url =
-        'http://localhost:8000/api/event'; // Ganti dengan URL API Anda
-
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(event.toJson()),
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        print('Data berhasil dipost ke server');
-        _fetchAndSetEvents(); // Refresh events after posting new event
-      } else {
-        throw Exception(
-            'Gagal memposting data ke server: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error: $e');
-      throw Exception('Terjadi kesalahan saat memposting data');
-    }
   }
 }
