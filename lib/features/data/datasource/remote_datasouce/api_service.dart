@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:proj_passion_shoot/features/data/model/event_calender/get%20event.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/post_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';

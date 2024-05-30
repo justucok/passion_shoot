@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/data/model/event_calender/get%20event.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 
 class CardEvent extends StatelessWidget {
   const CardEvent({
-    Key? key,
+    super.key,
     required this.selectedEvent,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<List<GetEvent>> selectedEvent;
 
@@ -19,7 +19,7 @@ class CardEvent extends StatelessWidget {
           print(
               "ValueListenableBuilder value: $value"); // Tambahkan log di sini
           if (value.isEmpty) {
-            return Center(child: Text("Tidak ada acara"));
+            return const Center(child: Text("Tidak ada acara"));
           }
           return ListView.builder(
             itemCount: value.length,
@@ -33,7 +33,7 @@ class CardEvent extends StatelessWidget {
                 child: ListTile(
                   title: Text(
                     value[index].title,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(value[index].time),
                 ),

@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/data/model/event_calender/get%20event.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/pages/schedule/add_event.dart';
 import 'package:proj_passion_shoot/features/widget/add_button.dart';
@@ -14,8 +16,8 @@ import 'package:http/http.dart' as http;
 
 class ScheduleContent extends StatefulWidget {
   const ScheduleContent({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ScheduleContent> createState() => _ScheduleContentState();
@@ -41,10 +43,10 @@ class _ScheduleContentState extends State<ScheduleContent> {
   Future<void> _fetchAndSetEvents() async {
     try {
       List<GetEvent> eventList = await _service.getEvents();
-      print('Data acara yang diterima:');
+      log('Data acara yang diterima:');
       for (var event in eventList) {
-        print(
-            event); // Mencetak data acara yang diterima dengan informasi yang lebih detail
+        log(event
+            .toString()); // Mencetak data acara yang diterima dengan informasi yang lebih detail
       }
 
       Map<DateTime, List<GetEvent>> eventMap = {};
@@ -62,14 +64,15 @@ class _ScheduleContentState extends State<ScheduleContent> {
         events = eventMap;
         _selectedEvent.value = _getEventsForDay(_selectedDay!);
         _selectedEvent.value = eventList;
-        print("Updated _selectedEvent: ${_selectedEvent.value}");
+        log("Updated _selectedEvent: ${_selectedEvent.value}");
       });
     } catch (e) {
-      print('Error fetching events: $e');
+      log('Error fetching events: $e');
     }
   }
 
   List<GetEvent> _getEventsForDay(DateTime day) {
+    log(events[day].toString());
     return events[day] ?? [];
   }
 
@@ -81,7 +84,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
         _selectedEvent.value = _getEventsForDay(selectedDay);
       });
     }
-    print('Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDay)}');
+    log('Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDay)}');
   }
 
   @override
@@ -157,7 +160,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
   }
 
   void postDataToServer(PostEvent event) async {
-    final String url =
+    const String url =
         'http://localhost:8000/api/event'; // Ganti dengan URL API Anda
 
     try {
@@ -170,14 +173,14 @@ class _ScheduleContentState extends State<ScheduleContent> {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('Data berhasil dipost ke server');
+        log('Data berhasil dipost ke server');
         _fetchAndSetEvents(); // Refresh events after posting new event
       } else {
         throw Exception(
             'Gagal memposting data ke server: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
       throw Exception('Terjadi kesalahan saat memposting data');
     }
   }

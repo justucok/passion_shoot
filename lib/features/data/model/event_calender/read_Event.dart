@@ -1,5 +1,5 @@
 import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
-import 'package:proj_passion_shoot/features/data/model/event_calender/get%20event.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 
 class EventService {
   final Service service = Service();

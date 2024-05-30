@@ -1,4 +1,4 @@
-import 'package:proj_passion_shoot/features/data/model/event_calender/get%20event.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 
 class PostEvent {
   final int? id; // Gunakan tipe data nullable untuk id

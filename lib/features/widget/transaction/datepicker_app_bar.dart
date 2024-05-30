@@ -5,7 +5,9 @@ import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class DatepickerAppBar extends StatefulWidget {
-  const DatepickerAppBar({super.key});
+  const DatepickerAppBar({super.key, this.pickedDate});
+
+  final DateTime? pickedDate;
 
   @override
   State<DatepickerAppBar> createState() => _DatepickerAppBarState();
