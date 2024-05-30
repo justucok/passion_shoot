@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:proj_passion_shoot/config/theme/app_theme.dart';
+// import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 class Graph extends StatefulWidget {
   const Graph({
@@ -27,29 +27,32 @@ class _GraphState extends State<Graph> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Center(
-          child: TextButton(
-            onPressed: () async {
-              final DateTimeRange? dateTimeRange = await showDateRangePicker(
-                context: context,
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2200),
-              );
-              if (dateTimeRange != null) {
-                setState(() {
-                  selectedDates = dateTimeRange;
-                });
-              }
-            },
-            child: Text(
-              "${DateFormat('dd MMM yyyy').format(selectedDates.start)} - ${DateFormat('dd MMM yyyy').format(selectedDates.end)}",
-              style: primaryTextStyle,
-            ),
-          ),
-        ),
+        // non aktif daterange picker
+        // Center(
+        //   child: TextButton(
+        //     onPressed: () async {
+        //       final DateTimeRange? dateTimeRange = await showDateRangePicker(
+        //         context: context,
+        //         firstDate: DateTime(2000),
+        //         lastDate: DateTime(2200),
+        //       );
+        //       if (dateTimeRange != null) {
+        //         setState(() {
+        //           selectedDates = dateTimeRange;
+        //         });
+        //       }
+        //     },
+        //     child: Text(
+        //       "${DateFormat('dd MMM yyyy').format(selectedDates.start)} - ${DateFormat('dd MMM yyyy').format(selectedDates.end)}",
+        //       style: primaryTextStyle,
+        //     ),
+        //   ),
+        // ),
+        // end daterange picker
         const SizedBox(
           height: 20,
         ),
+        // graph
         PieChart(
           dataMap: widget.dataMap,
           chartType: ChartType.ring,
@@ -64,6 +67,7 @@ class _GraphState extends State<Graph> {
           colorList: widget.colorList,
           legendOptions: const LegendOptions(showLegends: false),
         ),
+        // end graph
         const SizedBox(height: 20), // Jarak antara chart dan legend
         SizedBox(
           height:
