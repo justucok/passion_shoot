@@ -126,6 +126,30 @@ class Service {
     }
   }
 
+  Future<void> postDataToServer(PostEvent event) async {
+    final String url = '${baseUrl}event'; // URL for posting event data
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(event.toJson()),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Data berhasil dipost ke server');
+      } else {
+        throw Exception(
+            'Gagal memposting data ke server: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Terjadi kesalahan saat memposting data');
+    }
+  }
+
   Future<void> createEvent(PostEvent event) async {
     final response = await http.post(
       Uri.parse('${baseUrl}event'),

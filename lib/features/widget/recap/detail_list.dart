@@ -1,17 +1,45 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
+import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
 
 class DetailList extends StatelessWidget {
+  final List<TransactionData> transactions;
+
   const DetailList({
     super.key,
+    required this.transactions,
   });
+
+  String formatNumber(String number) {
+    if (number.isEmpty) return '0';
+    String result = '';
+    int count = 0;
+    for (int i = number.length - 1; i >= 0; i--) {
+      result = number[i] + result;
+      count++;
+      if (count % 3 == 0 && i != 0) {
+        result = '.$result';
+      }
+    }
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
-    // double screenWidth = MediaQuery.of(context).size.width;
-    // double contentWidth = screenWidth * 0.9; // 90% dari lebar layar
+    double totalIncome = 0;
+    double totalExpenses = 0;
+
+    for (var transaction in transactions) {
+      double amount = double.tryParse(transaction.camount) ?? 0;
+      if (transaction.ctypeid == '1') {
+        totalIncome += amount;
+      } else if (transaction.ctypeid == '2') {
+        totalExpenses += amount;
+      }
+    }
+
+    double balance = totalIncome - totalExpenses;
+
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -47,7 +75,7 @@ class DetailList extends StatelessWidget {
                     fontWeight: FontWeight.normal, color: Colors.black),
               ),
               trailing: Text(
-                '0',
+                '0', // Assuming starting balance is zero
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ),
@@ -59,7 +87,7 @@ class DetailList extends StatelessWidget {
                     fontWeight: FontWeight.normal, color: Colors.black),
               ),
               trailing: Text(
-                '850.000',
+                formatNumber(totalExpenses.toStringAsFixed(0)),
                 style:
                     primaryTextStyle.copyWith(fontSize: 14, color: dangerColor),
               ),
@@ -72,7 +100,7 @@ class DetailList extends StatelessWidget {
                     fontWeight: FontWeight.normal, color: Colors.black),
               ),
               trailing: Text(
-                '+2.000.000',
+                '+${formatNumber(totalIncome.toStringAsFixed(0))}',
                 style:
                     primaryTextStyle.copyWith(fontSize: 14, color: succesColor),
               ),
@@ -85,20 +113,7 @@ class DetailList extends StatelessWidget {
                     fontWeight: FontWeight.normal, color: Colors.black),
               ),
               trailing: Text(
-                '+1.150.000',
-                style:
-                    primaryTextStyle.copyWith(fontSize: 14, color: succesColor),
-              ),
-            ),
-            ListTile(
-              contentPadding: const EdgeInsets.all(0),
-              title: Text(
-                'Koreksi Saldo',
-                style: primaryTextStyle.copyWith(
-                    fontWeight: FontWeight.normal, color: Colors.black),
-              ),
-              trailing: Text(
-                '+1.090.000',
+                formatNumber(balance.toStringAsFixed(0)),
                 style:
                     primaryTextStyle.copyWith(fontSize: 14, color: succesColor),
               ),
@@ -111,7 +126,7 @@ class DetailList extends StatelessWidget {
                     fontWeight: FontWeight.normal, color: Colors.black),
               ),
               trailing: Text(
-                '2.240.000',
+                formatNumber(balance.toStringAsFixed(0)),
                 style: primaryTextStyle.copyWith(fontSize: 14),
               ),
             ),

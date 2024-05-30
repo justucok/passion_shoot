@@ -8,6 +8,9 @@ Color succesColor = const Color(0xff198754);
 Color dangerColor = const Color(0xffFF0E0E);
 Color textColor = const Color(0xff1E1E1E);
 Color secondaryTextColor = const Color(0xffffffff);
+Color incomeColor = Color.fromARGB(255, 5, 92, 17);
+Color expansesColor = Color.fromARGB(255, 138, 7, 7);
+Color balanceColor = Color.fromARGB(255, 15, 27, 154);
 
 TextStyle primaryTextStyle = TextStyle(
   color: textColor,
