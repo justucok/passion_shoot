@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
@@ -67,7 +69,7 @@ class _RecapContentState extends State<RecapContent> {
         isLoading = false;
       });
       // Handle error, show error message
-      print('Error fetching transactions: $error');
+      log('Error fetching transactions: $error');
     }
   }
 
@@ -81,7 +83,7 @@ class _RecapContentState extends State<RecapContent> {
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 // toggle button

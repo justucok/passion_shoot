@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
@@ -45,7 +45,7 @@ class _StatusBarState extends State<StatusBar> {
         totalPengeluaran = totalPengeluaranTemp;
       });
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
     }
   }
 

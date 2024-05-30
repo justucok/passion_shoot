@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/post_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
@@ -53,7 +55,7 @@ class _MethodFormState extends State<MethodForm> {
             _tampilkanDialogBerhasil();
           } catch (e) {
             // Tangani kesalahan saat menyimpan data
-            print('Error menyimpan metode pembayaran: $e');
+            log('Error menyimpan metode pembayaran: $e');
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Gagal menyimpan metode pembayaran: $e'),
@@ -63,7 +65,7 @@ class _MethodFormState extends State<MethodForm> {
         }
       } catch (e) {
         // Tangani kesalahan saat mengambil data dari database
-        print('Error mengambil metode pembayaran: $e');
+        log('Error mengambil metode pembayaran: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Gagal mengambil metode pembayaran: $e'),

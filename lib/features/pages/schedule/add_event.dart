@@ -1,11 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import DateFormat from intl package
 import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
-import 'package:proj_passion_shoot/features/widget/schedule/schedule.dart';
-// Import the HomeScreen
 
 // ignore: must_be_immutable
 class EventScreen extends StatefulWidget {
@@ -37,10 +39,7 @@ class _EventScreenState extends State<EventScreen> {
             2024, 5, 28, widget.selectedTime.hour, widget.selectedTime.minute)),
       );
 
-      print('Data Event:');
-      print('Title: ${newEvent.title}');
-      print('Date: ${newEvent.date}');
-      print('Time: ${newEvent.time}');
+      log('Data Event, Title: ${newEvent.title}, Date: ${newEvent.date}, Time: ${newEvent.time}');
 
       await service.createEvent(newEvent);
 
@@ -53,15 +52,17 @@ class _EventScreenState extends State<EventScreen> {
       widget.eventController.clear();
 
       // Navigate to HomeScreen after successful event addition
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                ScheduleContent()), // Replace current screen with HomeScreen
-      );
+
+      Navigator.pop(context);
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) =>
+      //           ScheduleContent()), // Replace current screen with HomeScreen
+      // );
     } catch (e, stackTrace) {
-      print('Error while saving event: $e');
-      print('Stack Trace: $stackTrace');
+      log('Error while saving event: $e');
+      log('Stack Trace: $stackTrace');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Gagal menambahkan event: $e'),

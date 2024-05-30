@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -192,7 +194,7 @@ class _TransactionFormState extends State<TransactionForm> {
           description: description,
         );
 
-        print(transaction);
+        log(transaction.toString());
         await serviceAPI.saveTransaction(transaction);
 
         // ignore: use_build_context_synchronously
@@ -205,7 +207,7 @@ class _TransactionFormState extends State<TransactionForm> {
         // Tampilkan popup berhasil menambahkan
         _showSuccessDialog();
       } catch (e) {
-        print('Gagal menyimpan transaksi: $e');
+        log('Gagal menyimpan transaksi: $e');
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

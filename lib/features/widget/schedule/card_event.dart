@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
@@ -16,7 +18,7 @@ class CardEvent extends StatelessWidget {
       child: ValueListenableBuilder<List<GetEvent>>(
         valueListenable: selectedEvent,
         builder: (context, value, child) {
-          print(
+          log(
               "ValueListenableBuilder value: $value"); // Tambahkan log di sini
           if (value.isEmpty) {
             return const Center(child: Text("Tidak ada acara"));

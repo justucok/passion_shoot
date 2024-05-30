@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/post_payment_method.dart';
@@ -47,7 +48,7 @@ class Service {
         throw Exception('Failed to load Data: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching payment methods: $e');
+      log('Error fetching payment methods: $e');
       throw Exception('Failed to fetch payment methods: $e');
     }
   }
@@ -74,13 +75,13 @@ class Service {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print('Berhasil menyimpan payment method');
+      log('Berhasil menyimpan payment method');
     } else if (response.statusCode == 409) {
       throw Exception('Payment method already exists');
     } else {
-      print('Gagal menyimpan payment method: ${response.statusCode}');
+      log('Gagal menyimpan payment method: ${response.statusCode}');
       if (response.body.isNotEmpty) {
-        print('Detail Kesalahan: ${response.body}');
+        log('Detail Kesalahan: ${response.body}');
       }
       throw Exception('Failed to save payment method');
     }
@@ -97,11 +98,11 @@ class Service {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print('Berhasil menyimpan transaksi');
+      log('Berhasil menyimpan transaksi');
     } else {
-      print('Gagal menyimpan transaksi: ${response.statusCode}');
+      log('Gagal menyimpan transaksi: ${response.statusCode}');
       if (response.body.isNotEmpty) {
-        print('Detail Kesalahan: ${response.body}');
+        log('Detail Kesalahan: ${response.body}');
       }
       throw Exception('Failed to save transaction');
     }
@@ -116,12 +117,12 @@ class Service {
       try {
         return GetEvent.parseDataList(jsonResponse);
       } catch (e) {
-        print('Error parsing JSON: $e');
+        log('Error parsing JSON: $e');
         throw Exception('Failed to parse events');
       }
     } else {
-      print('Failed to load events: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      log('Failed to load events: ${response.statusCode}');
+      log('Response body: ${response.body}');
       throw Exception('Failed to load events');
     }
   }
@@ -139,13 +140,13 @@ class Service {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('Data berhasil dipost ke server');
+        log('Data berhasil dipost ke server');
       } else {
         throw Exception(
             'Gagal memposting data ke server: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
       throw Exception('Terjadi kesalahan saat memposting data');
     }
   }
@@ -160,11 +161,11 @@ class Service {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print('Berhasil menyimpan transaksi');
+      log('Berhasil menyimpan transaksi');
     } else {
-      print('Gagal menyimpan transaksi: ${response.statusCode}');
+      log('Gagal menyimpan transaksi: ${response.statusCode}');
       if (response.body.isNotEmpty) {
-        print('Detail Kesalahan: ${response.body}');
+        log('Detail Kesalahan: ${response.body}');
       }
       throw Exception('Failed to save transaction');
     }
