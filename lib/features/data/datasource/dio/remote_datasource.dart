@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/event.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/payment.dart';
@@ -18,6 +20,7 @@ class RemoteDataSource {
 
   Future<DataEvent> getEvent() async {
     final response = await dio.get('/event');
+    log('message from dio : ${response.data}');
     return DataEvent.fromJson(response.data);
   }
 

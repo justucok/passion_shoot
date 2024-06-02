@@ -11,7 +11,7 @@ class DataEvent {
 }
 
 class Event {
-  final String id;
+  final int id;
   final String date;
   final String title;
   final String time;
@@ -24,7 +24,7 @@ class Event {
   });
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
-        id: json['id'].toString(),
+        id: json['id'],
         date: json['date'].toString(),
         title: json['title'],
         time: json['time'].toString(),

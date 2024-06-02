@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,62 +29,62 @@ class _ScheduleContentState extends State<ScheduleContent> {
   final TimeOfDay _selectedTime = TimeOfDay.now();
   final TextEditingController _eventController = TextEditingController();
   Map<DateTime, List<GetEvent>> events = {};
-  late final ValueNotifier<List<GetEvent>> _selectedEvent;
+  // late final ValueNotifier<List<GetEvent>> _selectedEvent;
   final Service _service = Service(); // Membuat instance dari kelas Service
 
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvent = ValueNotifier<List<GetEvent>>([]);
-    _fetchAndSetEvents();
+    // _selectedEvent = ValueNotifier<List<GetEvent>>([]);
+    // _fetchAndSetEvents();
   }
 
-  Future<void> _fetchAndSetEvents() async {
-    try {
-      List<GetEvent> eventList = await _service.getEvents();
-      log('Data acara yang diterima:');
-      for (var event in eventList) {
-        log(event
-            .toString()); // Mencetak data acara yang diterima dengan informasi yang lebih detail
-      }
+  // Future<void> _fetchAndSetEvents() async {
+  //   try {
+  //     List<GetEvent> eventList = await _service.getEvents();
+  //     log('Data acara yang diterima:');
+  //     for (var event in eventList) {
+  //       log(event
+  //           .toString()); // Mencetak data acara yang diterima dengan informasi yang lebih detail
+  //     }
 
-      Map<DateTime, List<GetEvent>> eventMap = {};
+  //     Map<DateTime, List<GetEvent>> eventMap = {};
 
-      for (var event in eventList) {
-        DateTime eventDate = DateTime.parse(event.date);
-        if (eventMap.containsKey(eventDate)) {
-          eventMap[eventDate]!.add(event);
-        } else {
-          eventMap[eventDate] = [event];
-        }
-      }
+  //     for (var event in eventList) {
+  //       DateTime eventDate = DateTime.parse(event.date);
+  //       if (eventMap.containsKey(eventDate)) {
+  //         eventMap[eventDate]!.add(event);
+  //       } else {
+  //         eventMap[eventDate] = [event];
+  //       }
+  //     }
 
-      setState(() {
-        events = eventMap;
-        _selectedEvent.value = _getEventsForDay(_selectedDay!);
-        _selectedEvent.value = eventList;
-        log("Updated _selectedEvent: ${_selectedEvent.value}");
-      });
-    } catch (e) {
-      log('Error fetching events: $e');
-    }
-  }
+  //     setState(() {
+  //       events = eventMap;
+  //       _selectedEvent.value = _getEventsForDay(_selectedDay!);
+  //       _selectedEvent.value = eventList;
+  //       // log("Updated _selectedEvent: ${_selectedEvent.value}");
+  //     });
+  //   } catch (e) {
+  //     // log('Error fetching events: $e');
+  //   }
+  // }
 
-  List<GetEvent> _getEventsForDay(DateTime day) {
-    log(events[day].toString());
-    return events[day] ?? [];
-  }
+  // List<GetEvent> _getEventsForDay(DateTime day) {
+  //   log('event for day : ${events[day]}');
+  //   return events[day] ?? [];
+  // }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _selectedEvent.value = _getEventsForDay(selectedDay);
+        // _selectedEvent.value = _getEventsForDay(selectedDay);
       });
     }
-    log('Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDay)}');
+    // log('Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDay)}');
   }
 
   @override
@@ -106,29 +105,52 @@ class _ScheduleContentState extends State<ScheduleContent> {
                   border: Border.all(),
                   borderRadius: BorderRadius.circular(9),
                 ),
-                child: TableCalendar(
-                  focusedDay: _focusedDay,
-                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                  onDaySelected: _onDaySelected,
-                  eventLoader: _getEventsForDay,
-                  firstDay: DateTime(2000),
-                  lastDay: DateTime(2200),
-                  calendarStyle: CalendarStyle(
-                      todayDecoration: ShapeDecoration(
-                          shape: const CircleBorder(), color: secondaryColor),
-                      selectedDecoration: ShapeDecoration(
-                          shape: const CircleBorder(), color: primaryColor)),
-                  headerStyle: HeaderStyle(
-                    formatButtonVisible: false,
-                    titleCentered: true,
-                    titleTextStyle: primaryTextStyle.copyWith(fontSize: 16),
-                  ),
+                child: BlocBuilder<EventBloc, EventState>(
+                  builder: (context, state) {
+                    if (state is EventLoaded) {
+                      final dataEvent = state.events;
+                      return TableCalendar(
+                        focusedDay: _focusedDay,
+                        selectedDayPredicate: (day) =>
+                            isSameDay(_selectedDay, day),
+                        onDaySelected: _onDaySelected,
+                        eventLoader: (day) {
+                          final filteredEvent = dataEvent
+                              .where(
+                                (element) =>
+                                    element.date ==
+                                    DateFormat('yyyy-MM-dd').format(day),
+                              )
+                              .toList();
+                          return filteredEvent;
+                        },
+                        firstDay: DateTime(2000),
+                        lastDay: DateTime(2200),
+                        calendarStyle: CalendarStyle(
+                            todayDecoration: ShapeDecoration(
+                                shape: const CircleBorder(),
+                                color: secondaryColor),
+                            selectedDecoration: ShapeDecoration(
+                                shape: const CircleBorder(),
+                                color: primaryColor)),
+                        headerStyle: HeaderStyle(
+                          formatButtonVisible: false,
+                          titleCentered: true,
+                          titleTextStyle:
+                              primaryTextStyle.copyWith(fontSize: 16),
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: Text('Gagal memuat kalender'),
+                    );
+                  },
                 ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              const CardEvent()
+              CardEvent(selectedDate: _selectedDay,)
               // ValueListenableBuilder<List<GetEvent>>(
               //   valueListenable: _selectedEvent,
               //   builder: (context, value, _) {
@@ -167,7 +189,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
                       time: _selectedTime.format(context),
                     );
                     _service.postDataToServer(newEvent); // Call the method here
-                    _fetchAndSetEvents(); // Refresh events after posting new event
+                    // _fetchAndSetEvents(); // Refresh events after posting new event
                   },
                 ),
               ),

@@ -36,14 +36,14 @@ class _TransactionContentState extends State<TransactionContent> {
           ),
         ),
         // end app bar
-        body: const Column(
+        body: Column(
           children: [
             // status bar
-            StatusBar(),
+            const StatusBar(),
             // end status bar
             // content
             Expanded(
-              child: ContentList(),
+              child: ContentList(selectedDate: selectedDate,),
               // ContentList(),
             ),
           ],

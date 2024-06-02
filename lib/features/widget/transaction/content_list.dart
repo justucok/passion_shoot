@@ -90,13 +90,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/bloc/transaction_bloc/transaction_bloc.dart';
 
+// ignore: must_be_immutable
 class ContentList extends StatelessWidget {
-  const ContentList({
+  ContentList({
     super.key,
+    required this.selectedDate,
   });
+
+  DateTime? selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -108,17 +113,28 @@ class ContentList extends StatelessWidget {
           );
         } else if (state is TransactionLoaded) {
           final data = state.transaksis;
+          final spesificData = data
+              .where((element) =>
+                  element.date ==
+                  DateFormat('yyyy-MM-dd').format(selectedDate!))
+              .toList();
+              log(spesificData.toString());
           for (var item in data) {
             log(item.date);
           }
           // list transaksi
           return ListView.builder(
-            itemCount: data.length,
+            itemCount: spesificData.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(data[index].title, style: primaryTextStyle,),
-                subtitle: Text(data[index].description,),
-                trailing: Text('${data[index].amount}'),
+                title: Text(
+                  spesificData[index].title,
+                  style: primaryTextStyle,
+                ),
+                subtitle: Text(
+                  spesificData[index].description,
+                ),
+                trailing: Text('${spesificData[index].amount}'),
               );
             },
           );

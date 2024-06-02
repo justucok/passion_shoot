@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +19,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       try { 
         final result = await remoteDatasource.getEvent();
         emit(EventLoaded(events: result.data));
+        log(result.data.toString());
       } catch (e) {
         emit(EventError(error: e.toString()));
       }

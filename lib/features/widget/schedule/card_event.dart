@@ -2,15 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/bloc/event_bloc/event_bloc.dart';
 
+// ignore: must_be_immutable
 class CardEvent extends StatelessWidget {
-  const CardEvent({
+  CardEvent({
     super.key,
-    // required this.selectedEvent,
+    required this.selectedDate,
   });
 
-  // final ValueNotifier<List<GetEvent>> selectedEvent;
+   DateTime? selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +26,35 @@ class CardEvent extends StatelessWidget {
         }
         if (state is EventLoaded) {
           final data = state.events;
-          for (var item in data) {
-            log(item.title);
-          }
+          final spesificData = data.where((element) => element.date == DateFormat('yyyy-MM-dd').format(selectedDate!)).toList();
+          log('data today : $spesificData');
           // list method
           return ListView.builder(
-            itemCount: data.length,
+            itemCount: spesificData.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(data[index].title),
-                trailing: Text(data[index].time),
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(9),
+                  color: bgColor,
+                ),
+                child: ListTile(
+                  title: Text(spesificData[index].title, style: primaryTextStyle,),
+                  // subtitle: Text(data[index].date),
+                  trailing: Text(spesificData[index].time),
+                ),
               );
             },
           );
           // end list method
-        } if (state is EventError) {
+        }
+        if (state is EventError) {
+          log('e : ${state.error}');
           return Center(
             child: Text(state.error),
           );
-        } return const Center(
+        }
+        return const Center(
           child: Text('Gagal memuat data'),
         );
       },
