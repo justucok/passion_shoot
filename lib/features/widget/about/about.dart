@@ -12,7 +12,16 @@ class AboutContent extends StatelessWidget {
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(56),
-        child: CustomAppBar(title: 'Tentang Aplikasi'),
+        child: CustomAppBar(
+          title: 'Tentang Aplikasi',
+          action: [
+            ImageIcon(
+              AssetImage('assets/images/logo_trans.png'),
+              size: 50,
+              color: Colors.white,
+            )
+          ],
+        ),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),

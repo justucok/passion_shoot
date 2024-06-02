@@ -10,7 +10,7 @@ class MyRoutes {
       case '/MethodContent':
         return MaterialPageRoute(
             builder: (context) =>
-                MethodContent()); // Tambahkan rute untuk MethodContent di sini
+                const MethodContent()); // Tambahkan rute untuk MethodContent di sini
       default:
         throw Exception('Invalid Route');
     }
