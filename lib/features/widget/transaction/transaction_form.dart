@@ -185,6 +185,7 @@ class _TransactionFormState extends State<TransactionForm> {
         double amount = double.parse(jumlahController.text);
         String title = judulController.text;
         String description = keteranganController.text;
+        String date = DateFormat('yyyy-MMM-d').format(widget.selectedDate);
 
         Transaction transaction = Transaction(
           typeid: widget.selectedTypeId, // Gunakan typeid yang diterima
@@ -192,6 +193,7 @@ class _TransactionFormState extends State<TransactionForm> {
           amount: amount,
           title: title,
           description: description,
+          date: date
         );
 
         log(transaction.toString());

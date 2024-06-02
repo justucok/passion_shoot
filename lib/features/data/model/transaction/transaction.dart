@@ -1,23 +1,24 @@
-class DataTransaction {
-  final List<Transaction> data;
+class DataTransaksi {
+  final List<Transaksi> data;
+  DataTransaksi({required this.data});
+  factory DataTransaksi.fromJson(Map<String, dynamic> json) => DataTransaksi(
+      data: List.from(
+          json['data'].map((transaksi) => Transaksi.fromModel(transaksi))));
 
-  DataTransaction({required this.data});
-
-  factory DataTransaction.fromJson(Map<String, dynamic> json) =>
-      DataTransaction(
-        data: List.from(json['data'].map((transaction) => Transaction.fromModel(transaction))),
-      );
+  toJson() {}
 }
 
-class Transaction {
+class Transaksi {
   final int id;
   final int typeid;
   final int paymentid;
-  final int amount;
+  final double amount;
+  final String date;
   final String title;
   final String description;
 
-  Transaction({
+  Transaksi({
+    required this.date,
     required this.id,
     required this.typeid,
     required this.paymentid,
@@ -26,12 +27,13 @@ class Transaction {
     required this.description,
   });
 
-  factory Transaction.fromModel(Map<String, dynamic> json) => Transaction(
-        id: json['id'],
-        typeid: json['typeid'],
-        paymentid: json['paymentid'],
-        amount: json['amount'],
-        title: json['title'],
-        description: json['description'],
-      );
+  factory Transaksi.fromModel(Map<String, dynamic> json) => Transaksi(
+      date: json['date'],
+      id: json['id'],
+      typeid: json['typeid'],
+      paymentid: json['paymentid'],
+      amount:
+          (json['amount'] as num).toDouble(), // Konversi nilai amount ke double
+      title: json['title'],
+      description: json['description']);
 }

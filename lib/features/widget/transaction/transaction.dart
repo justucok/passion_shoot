@@ -1,9 +1,7 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proj_passion_shoot/features/bloc/transaction_bloc.dart';
+import 'package:proj_passion_shoot/features/bloc/transaction_bloc/transaction_bloc.dart';
 import 'package:proj_passion_shoot/features/data/datasource/dio/remote_datasource.dart';
 import 'package:proj_passion_shoot/features/pages/transaction/add_transaction.dart';
 import 'package:proj_passion_shoot/features/widget/multiple_button.dart';
@@ -11,61 +9,45 @@ import 'package:proj_passion_shoot/features/widget/transaction/content_list.dart
 import 'package:proj_passion_shoot/features/widget/transaction/datepicker_app_bar.dart';
 import 'package:proj_passion_shoot/features/widget/transaction/statusbar.dart';
 
-class TransactionContent extends StatelessWidget {
+class TransactionContent extends StatefulWidget {
   const TransactionContent({
     super.key,
   });
 
   @override
+  State<TransactionContent> createState() => _TransactionContentState();
+}
+
+class _TransactionContentState extends State<TransactionContent> {
+  @override
   Widget build(BuildContext context) {
+    // datetime to filter data
+    DateTime selectedDate = DateTime.now();
+    // log(selectedDate.toString());
     return BlocProvider(
-      create: (context) => TransactionBloc(RemoteDataSource())..add(LoadTransaction()),
+      create: (context) => TransactionBloc(remotedatasource: RemoteDataSource())
+        ..add(LoadTransactions()),
       child: Scaffold(
         // App bar
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(56),
-          child: DatepickerAppBar(),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(56),
+          child: DatepickerAppBar(
+            selectDate: selectedDate,
+          ),
         ),
         // end app bar
-        body: Column(
+        body: const Column(
           children: [
             // status bar
-            const StatusBar(),
+            StatusBar(),
             // end status bar
-            Expanded(child: BlocBuilder<TransactionBloc, TransactionState>(
-              builder: (context, state) {
-                if (state is TransactionLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is TransactionLoaded) {
-                  final data = state.transactions;
-                  log(data.toString());
-                  return ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      ListTile(
-                        title: Text(data[index].title),
-                        trailing: Text('${data[index].amount}'),
-                      );
-                      return const Center(
-                        child: Text('Tidak ada transaksi'),
-                      );
-                    },
-                  );
-                } else if (state is TransactionError) {
-                  return Center(
-                    child: Text(state.error),
-                  );
-                }
-                return const Center(
-                  child: Text('Gagal memuat data'),
-                );
-              },
-            )
-                // ContentList(),
-                )
+            // content
+            Expanded(
+              child: ContentList(),
+              // ContentList(),
+            ),
           ],
+          // end content
         ),
         // add button
         floatingActionButton: MultipleButton(
@@ -95,3 +77,4 @@ class TransactionContent extends StatelessWidget {
     );
   }
 }
+

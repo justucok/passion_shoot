@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proj_passion_shoot/features/data/datasource/api_service.dart';
-import 'package:proj_passion_shoot/features/data/model/payment/get_payment_method.dart';
+import 'package:proj_passion_shoot/features/data/datasource/dio/remote_datasource.dart';
+import 'package:proj_passion_shoot/features/data/model/payment/payment.dart';
 
 part 'payment_method_event.dart';
 part 'payment_method_state.dart';
 
 class PaymentMethodBloc extends Bloc<PaymentMethodEvent, PaymentMethodState> {
-  final Service remoteDataSource;
+  final RemoteDataSource remoteDataSource;
   PaymentMethodBloc(this.remoteDataSource) : super(PaymentMethodInitial()) {
     on<LoadPaymentMethod>((event, emit) async {
       emit(PaymentMethodLoading());
       try {
-        final result = await remoteDataSource.getmethodpayment();
-        emit(PaymentMethodLoaded(result));
+        final result = await remoteDataSource.getPaymentMethod();
+        emit(PaymentMethodLoaded(result.data));
       } catch (e) {
         emit(PaymentMethodError(e.toString()));
       }

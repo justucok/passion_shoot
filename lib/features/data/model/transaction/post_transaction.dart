@@ -4,8 +4,10 @@ class Transaction {
   final double amount;
   final String title;
   final String description;
+  final String date;
 
   Transaction({
+    required this.date,
     required this.typeid,
     required this.paymentid,
     required this.amount,
@@ -15,6 +17,7 @@ class Transaction {
 
   Map<String, dynamic> toJson() {
     return {
+      'date': date,
       'typeid': typeid,
       'paymentid': paymentid,
       'amount': amount,

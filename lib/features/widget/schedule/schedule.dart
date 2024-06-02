@@ -1,8 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
+import 'package:proj_passion_shoot/features/bloc/event_bloc/event_bloc.dart';
+import 'package:proj_passion_shoot/features/data/datasource/dio/remote_datasource.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/pages/schedule/add_event.dart';
@@ -87,86 +90,90 @@ class _ScheduleContentState extends State<ScheduleContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(56),
-        child: CustomAppBar(title: 'Jadwal'),
-      ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(9),
-              ),
-              child: TableCalendar(
-                focusedDay: _focusedDay,
-                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                onDaySelected: _onDaySelected,
-                eventLoader: _getEventsForDay,
-                firstDay: DateTime(2000),
-                lastDay: DateTime(2200),
-                calendarStyle: CalendarStyle(
-                    todayDecoration: ShapeDecoration(
-                        shape: const CircleBorder(), color: secondaryColor),
-                    selectedDecoration: ShapeDecoration(
-                        shape: const CircleBorder(), color: primaryColor)),
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                  titleTextStyle: primaryTextStyle.copyWith(fontSize: 16),
+    return BlocProvider(
+      create: (context) => EventBloc(RemoteDataSource())..add(LoadEvent()),
+      child: Scaffold(
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(56),
+          child: CustomAppBar(title: 'Jadwal'),
+        ),
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(9),
+                ),
+                child: TableCalendar(
+                  focusedDay: _focusedDay,
+                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                  onDaySelected: _onDaySelected,
+                  eventLoader: _getEventsForDay,
+                  firstDay: DateTime(2000),
+                  lastDay: DateTime(2200),
+                  calendarStyle: CalendarStyle(
+                      todayDecoration: ShapeDecoration(
+                          shape: const CircleBorder(), color: secondaryColor),
+                      selectedDecoration: ShapeDecoration(
+                          shape: const CircleBorder(), color: primaryColor)),
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    titleTextStyle: primaryTextStyle.copyWith(fontSize: 16),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ValueListenableBuilder<List<GetEvent>>(
-              valueListenable: _selectedEvent,
-              builder: (context, value, _) {
-                // Filter events based on selected date
-                List<GetEvent> selectedEvents = value
-                    .where((event) =>
-                        DateFormat('yyyy-MM-dd')
-                            .format(DateTime.parse(event.date)) ==
-                        DateFormat('yyyy-MM-dd').format(_selectedDay!))
-                    .toList();
-
-                // Buat ValueNotifier baru dengan daftar acara yang telah difilter
-                ValueNotifier<List<GetEvent>> filteredEventsNotifier =
-                    ValueNotifier<List<GetEvent>>(selectedEvents);
-
-                // Pass filteredEventsNotifier ke CardEvent
-                return CardEvent(selectedEvent: filteredEventsNotifier);
-              },
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: AddButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<dynamic>(
-              builder: (context) => EventScreen(
-                eventController: _eventController,
-                selectedTime: _selectedTime,
-                selectedDate: _selectedDay!,
-                onPressed: () {
-                  // Call postDataToServer from Service class
-                  PostEvent newEvent = PostEvent(
-                    date: DateFormat('yyyy-MM-dd').format(_selectedDay!),
-                    title: _eventController.text,
-                    time: _selectedTime.format(context),
-                  );
-                  _service.postDataToServer(newEvent); // Call the method here
-                  _fetchAndSetEvents(); // Refresh events after posting new event
-                },
+              const SizedBox(
+                height: 20,
               ),
-            ),
-          );
-        },
+              const CardEvent()
+              // ValueListenableBuilder<List<GetEvent>>(
+              //   valueListenable: _selectedEvent,
+              //   builder: (context, value, _) {
+              //     // Filter events based on selected date
+              //     List<GetEvent> selectedEvents = value
+              //         .where((event) =>
+              //             DateFormat('yyyy-MM-dd')
+              //                 .format(DateTime.parse(event.date)) ==
+              //             DateFormat('yyyy-MM-dd').format(_selectedDay!))
+              //         .toList();
+
+              //     // Buat ValueNotifier baru dengan daftar acara yang telah difilter
+              //     ValueNotifier<List<GetEvent>> filteredEventsNotifier =
+              //         ValueNotifier<List<GetEvent>>(selectedEvents);
+
+              //     // Pass filteredEventsNotifier ke CardEvent
+              //     return CardEvent(selectedEvent: filteredEventsNotifier);
+              //   },
+              // ),
+            ],
+          ),
+        ),
+        floatingActionButton: AddButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<dynamic>(
+                builder: (context) => EventScreen(
+                  eventController: _eventController,
+                  selectedTime: _selectedTime,
+                  selectedDate: _selectedDay!,
+                  onPressed: () {
+                    // Call postDataToServer from Service class
+                    PostEvent newEvent = PostEvent(
+                      date: DateFormat('yyyy-MM-dd').format(_selectedDay!),
+                      title: _eventController.text,
+                      time: _selectedTime.format(context),
+                    );
+                    _service.postDataToServer(newEvent); // Call the method here
+                    _fetchAndSetEvents(); // Refresh events after posting new event
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

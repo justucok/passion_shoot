@@ -1,3 +1,10 @@
+//
+// class DataTransaction {
+//   final List<TransactionData> data;
+//   DataTransaction({required this.data})
+//   factory DataTransaction.fromJson(Map<String, dynamic> json) => DataTransaction(data: List.from(json['data'].map(get_transaction)=> TransactionData.fromModel(get_transaction)));
+// }
+
 class TransactionData {
   String cid;
   String ctypeid;

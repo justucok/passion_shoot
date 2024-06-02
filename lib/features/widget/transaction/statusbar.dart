@@ -58,7 +58,7 @@ class _StatusBarState extends State<StatusBar> {
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: alternativeColor,
+          color: bgColor,
           borderRadius: const BorderRadius.all(
             Radius.circular(9),
           ),

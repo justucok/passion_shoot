@@ -8,7 +8,7 @@ final class PaymentMethodInitial extends PaymentMethodState {}
 final class PaymentMethodLoading extends PaymentMethodState {}
 
 final class PaymentMethodLoaded extends PaymentMethodState {
-  final List<PaymentData> methods;
+  final List<PaymentMethod> methods;
 
   PaymentMethodLoaded(this.methods);
 
