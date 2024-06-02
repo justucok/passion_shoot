@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/event.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/payment.dart';
+import 'package:proj_passion_shoot/features/data/model/payment/post_payment_method.dart';
+import 'package:proj_passion_shoot/features/data/model/transaction/post_transaction.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/transaction.dart';
 
 class RemoteDataSource {
@@ -32,6 +35,47 @@ class RemoteDataSource {
       }
     } catch (e) {
       throw Exception('Failed to post data: $e');
+    }
+  }
+
+  Future<void> postTransaction(Transaction transaction) async {
+    try {
+      final response =
+          await dio.post('/all_transaksi', data: transaction.toJson());
+      if (response.statusCode == 201) {
+        // Berhasil melakukan posting data
+      } else {
+        throw Exception('Failed to post transaction');
+      }
+    } catch (e) {
+      throw Exception('Failed to post transaction: $e');
+    }
+  }
+
+  Future<void> postPaymentMethod(PostPaymentMethod paymentMethod) async {
+    try {
+      final response =
+          await dio.post('/payment_method', data: paymentMethod.toJson());
+      if (response.statusCode == 201) {
+        // Berhasil melakukan posting data
+      } else {
+        throw Exception('Failed to post payment method');
+      }
+    } catch (e) {
+      throw Exception('Failed to post payment method: $e');
+    }
+  }
+
+  Future<void> postEvent(PostEvent event) async {
+    try {
+      final response = await dio.post('/event', data: event.toJson());
+      if (response.statusCode == 201) {
+        // Berhasil melakukan posting data
+      } else {
+        throw Exception('Failed to post event');
+      }
+    } catch (e) {
+      throw Exception('Failed to post event: $e');
     }
   }
 }

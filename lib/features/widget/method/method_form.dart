@@ -108,7 +108,7 @@ class _MethodFormState extends State<MethodForm> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Future.delayed(const Duration(seconds: 0), () {
-                  Navigator.of(context).pop();// Panggil balik ke parent
+                  Navigator.of(context).pop(); // Panggil balik ke parent
                   _navigateToDestinationPage(
                       context); // Navigasi ke halaman tujuan
                 });

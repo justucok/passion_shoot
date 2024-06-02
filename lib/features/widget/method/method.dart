@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/bloc/payment_bloc/payment_method_bloc.dart';
+import 'package:proj_passion_shoot/features/bloc/transaction_bloc/transaction_bloc.dart';
 import 'package:proj_passion_shoot/features/data/datasource/dio/remote_datasource.dart';
 import 'package:proj_passion_shoot/features/pages/method/new_method.dart';
 import 'package:proj_passion_shoot/features/widget/add_button.dart';
@@ -16,9 +17,18 @@ class MethodContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          PaymentMethodBloc(RemoteDataSource())..add(LoadPaymentMethod()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              PaymentMethodBloc(RemoteDataSource())..add(LoadPaymentMethod()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              TransactionBloc(remotedatasource: RemoteDataSource())
+                ..add(LoadTransactions()),
+        ),
+      ],
       child: Scaffold(
         // appbar
         appBar: const PreferredSize(
@@ -43,7 +53,7 @@ class MethodContent extends StatelessWidget {
             // end content list
             // const MethodList
             ),
-            // add button
+        // add button
         floatingActionButton: AddButton(
           onPressed: () {
             Navigator.of(context).push(
@@ -59,4 +69,3 @@ class MethodContent extends StatelessWidget {
     );
   }
 }
-
