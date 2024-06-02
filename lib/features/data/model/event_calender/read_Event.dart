@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'dart:developer';
-import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'package:proj_passion_shoot/features/data/datasource/api_service.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 
 class EventService {

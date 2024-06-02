@@ -1,7 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proj_passion_shoot/features/bloc/payment_method_bloc.dart';
+import 'package:proj_passion_shoot/features/data/datasource/api_service.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/get_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
@@ -28,7 +32,36 @@ class _MethodListState extends State<MethodList> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<PaymentData>>(
+    return 
+    // BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
+    //   builder: (context, state) {
+    //     if (state is PaymentMethodLoading) {
+    //       return const Center(
+    //         child: CircularProgressIndicator(),
+    //       );
+    //     } else if (state is PaymentMethodLoaded) {
+    //       final data = state.methods;
+    //       print(data.toString());
+    //       return Column(
+    //         children: [
+    //           ListTile(
+    //             title: Text(
+    //               'Total Saldo:',
+    //               style: primaryTextStyle,
+    //             ),
+    //             trailing: Text(data.toString()),
+    //           )
+    //         ],
+    //       );
+    //     } else if (state is PaymentMethodError) {
+    //       return Center(
+    //         child: Text(state.error),
+    //       );
+    //     }
+    //     return const Text('gagal memuat data');
+    //   },
+    // );
+    FutureBuilder<List<PaymentData>>(
       future: paymentMethods,
       builder: (context, paymentSnapshot) {
         if (paymentSnapshot.connectionState == ConnectionState.waiting) {

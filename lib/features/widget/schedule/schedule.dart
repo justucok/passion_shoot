@@ -10,7 +10,7 @@ import 'package:proj_passion_shoot/features/widget/add_button.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/schedule/card_event.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:proj_passion_shoot/features/data/datasource/remote_datasouce/api_service.dart';
+import 'package:proj_passion_shoot/features/data/datasource/api_service.dart';
 
 class ScheduleContent extends StatefulWidget {
   const ScheduleContent({
