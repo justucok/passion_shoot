@@ -7,6 +7,7 @@ import 'package:proj_passion_shoot/features/data/model/event_calender/post_event
 import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/get_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/post_transaction.dart';
+import 'package:proj_passion_shoot/features/data/model/transaction/transaction.dart';
 import 'package:proj_passion_shoot/features/data/model/type_transaction/type_transaction.dart';
 
 class Service {
