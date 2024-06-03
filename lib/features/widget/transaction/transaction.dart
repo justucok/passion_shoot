@@ -22,7 +22,7 @@ class _TransactionContentState extends State<TransactionContent> {
   @override
   Widget build(BuildContext context) {
     // datetime to filter data
-    DateTime selectedDate = DateTime.now();
+    DateTime selectedDay = DateTime.now();
     // log(selectedDate.toString());
     return BlocProvider(
       create: (context) => TransactionBloc(remotedatasource: RemoteDataSource())
@@ -32,7 +32,7 @@ class _TransactionContentState extends State<TransactionContent> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(56),
           child: DatepickerAppBar(
-            selectDate: selectedDate,
+            selectDate: selectedDay,
           ),
         ),
         // end app bar
@@ -43,7 +43,7 @@ class _TransactionContentState extends State<TransactionContent> {
             // end status bar
             // content
             Expanded(
-              child: ContentList(selectedDate: selectedDate,),
+              child: ContentList(selectedDate: selectedDay,),
               // ContentList(),
             ),
           ],
