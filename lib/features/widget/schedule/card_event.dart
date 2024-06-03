@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/bloc/event_bloc/event_bloc.dart';
+import 'package:proj_passion_shoot/features/bloc/get_event/event_bloc.dart';
 
 // ignore: must_be_immutable
 class CardEvent extends StatelessWidget {

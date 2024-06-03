@@ -29,8 +29,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/
+    - lib/assets/images/
 
 flutter_icons:
   android: true
-  image_path: "assets/images/LOGO.png"
+  image_path: "lib/assets/images/logo.png"

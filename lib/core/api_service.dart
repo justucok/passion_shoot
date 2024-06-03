@@ -7,7 +7,7 @@ import 'package:proj_passion_shoot/features/data/model/event_calender/post_event
 import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/get_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/post_transaction.dart';
-import 'package:proj_passion_shoot/features/data/model/type_transaction/type_transaction.dart';
+import 'package:proj_passion_shoot/features/data/model/type_transaction/body/type_transaction_body.dart';
 
 class Service {
   final String baseUrl = 'http://10.0.2.2:8000/api/';

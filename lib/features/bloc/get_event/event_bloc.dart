@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proj_passion_shoot/features/data/datasource/dio/remote_datasource.dart';
-import 'package:proj_passion_shoot/features/data/model/event_calender/event.dart';
+import 'package:proj_passion_shoot/core/network/remote_datasource.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/response/event_response.dart';
 
 
 part 'event_event.dart';

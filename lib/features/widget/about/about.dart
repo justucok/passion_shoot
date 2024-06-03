@@ -16,7 +16,7 @@ class AboutContent extends StatelessWidget {
           title: 'Tentang Aplikasi',
           action: [
             ImageIcon(
-              AssetImage('assets/images/logo_trans.png'),
+              AssetImage('lib/assets/images/logo_trans.png'),
               size: 50,
               color: Colors.white,
             )

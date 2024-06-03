@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
-import 'package:proj_passion_shoot/features/bloc/event_bloc/event_bloc.dart';
-import 'package:proj_passion_shoot/features/data/datasource/dio/remote_datasource.dart';
+import 'package:proj_passion_shoot/features/bloc/get_event/event_bloc.dart';
+import 'package:proj_passion_shoot/core/network/remote_datasource.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/get_event.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
 import 'package:proj_passion_shoot/features/pages/schedule/add_event.dart';
@@ -12,7 +12,7 @@ import 'package:proj_passion_shoot/features/widget/add_button.dart';
 import 'package:proj_passion_shoot/features/widget/custom_appbar.dart';
 import 'package:proj_passion_shoot/features/widget/schedule/card_event.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:proj_passion_shoot/features/data/datasource/api_service.dart';
+import 'package:proj_passion_shoot/core/api_service.dart';
 
 class ScheduleContent extends StatefulWidget {
   const ScheduleContent({

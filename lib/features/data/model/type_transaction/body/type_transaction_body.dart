@@ -1,18 +1,18 @@
-// ignore_for_file: non_constant_identifier_names
+
 
 class TypeTransaksiData {
   String id;
-  String type_transaction;
+  String typeTransaction;
 
   TypeTransaksiData({
     required this.id,
-    required this.type_transaction,
+    required this.typeTransaction,
   });
 
   factory TypeTransaksiData.fromJson(Map<String, dynamic> json) {
     return TypeTransaksiData(
       id: json['id'].toString(),
-      type_transaction: json['type_transaksi'],
+      typeTransaction: json['type_transaksi'],
     );
   }
 
