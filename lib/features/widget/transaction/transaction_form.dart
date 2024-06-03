@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
@@ -10,13 +12,11 @@ import 'package:proj_passion_shoot/features/data/model/transaction/post_transact
 
 // ignore: must_be_immutable
 class TransactionForm extends StatefulWidget {
-  DateTime selectedDate;
   final int selectedTypeId;
   final dynamic selectedValue;
 
   TransactionForm({
     super.key,
-    required this.selectedDate,
     required this.selectedTypeId,
     this.selectedValue,
   });
@@ -29,8 +29,9 @@ class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController jumlahController = TextEditingController();
   final TextEditingController judulController = TextEditingController();
   final TextEditingController keteranganController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
+  final TextEditingController tanggalController = TextEditingController();
 
+  DateTime selectedDate = DateTime.now();
   Service serviceAPI = Service();
   late Future<List<PaymentData>> listPayment;
   PaymentData? selectedPayment;
@@ -48,7 +49,7 @@ class _TransactionFormState extends State<TransactionForm> {
         children: [
           // Date Picker
           TextFormField(
-            controller: dateController,
+            controller: tanggalController,
             readOnly: true,
             decoration: InputDecoration(
               suffixIcon: const Icon(Icons.calendar_today),
@@ -61,13 +62,14 @@ class _TransactionFormState extends State<TransactionForm> {
                 context: context,
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2200),
-                initialDate: widget.selectedDate,
+                initialDate: selectedDate,
               );
               if (dateTime != null) {
                 setState(() {
-                  widget.selectedDate = dateTime;
-                  // Set selected date to the text field
-                  dateController.text = DateFormat.yMMMd().format(dateTime);
+                  selectedDate = dateTime;
+                  tanggalController.text =
+                      DateFormat('E, dd MMM yyyy').format(selectedDate);
+                  log('pilih tgl : $selectedDate');
                 });
               }
             },
@@ -183,16 +185,16 @@ class _TransactionFormState extends State<TransactionForm> {
         double amount = double.parse(jumlahController.text);
         String title = judulController.text;
         String description = keteranganController.text;
+        String date = tanggalController.text;
+        log('post tgl : $date');
 
         Transaction transaction = Transaction(
-          typeid: widget.selectedTypeId, // Gunakan typeid yang diterima
-          paymentid: int.parse(selectedPayment!.cid),
-          amount: amount,
-          title: title,
-          description: description,
-          date: DateFormat.yMMMd().format(
-              widget.selectedDate), // Menggunakan string dari selectedDate
-        );
+            typeid: widget.selectedTypeId, // Gunakan typeid yang diterima
+            paymentid: int.parse(selectedPayment!.cid),
+            amount: amount,
+            title: title,
+            description: description,
+            date: date);
 
         print(transaction);
         await serviceAPI.saveTransaction(transaction);

@@ -29,7 +29,6 @@ class TransactionScreen extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         width: double.infinity,
         child: TransactionForm(
-          selectedDate: selectedDate,
           selectedTypeId: selectedTypeId, // Meneruskan typeid
           selectedValue: null,
         ),
