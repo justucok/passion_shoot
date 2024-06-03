@@ -1,14 +1,12 @@
 // ignore_for_file: avoid_print
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
+import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/core/api_service.dart';
+
 import 'package:proj_passion_shoot/features/data/model/payment/get_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/post_transaction.dart';
-import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 
 // ignore: must_be_immutable
 class TransactionForm extends StatefulWidget {
@@ -24,7 +22,6 @@ class TransactionForm extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _TransactionFormState createState() => _TransactionFormState();
 }
 
@@ -32,6 +29,7 @@ class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController jumlahController = TextEditingController();
   final TextEditingController judulController = TextEditingController();
   final TextEditingController keteranganController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
 
   Service serviceAPI = Service();
   late Future<List<PaymentData>> listPayment;
@@ -50,9 +48,7 @@ class _TransactionFormState extends State<TransactionForm> {
         children: [
           // Date Picker
           TextFormField(
-            controller: TextEditingController(
-              text: DateFormat('E, dd MMM yyyy').format(widget.selectedDate),
-            ),
+            controller: dateController,
             readOnly: true,
             decoration: InputDecoration(
               suffixIcon: const Icon(Icons.calendar_today),
@@ -70,6 +66,8 @@ class _TransactionFormState extends State<TransactionForm> {
               if (dateTime != null) {
                 setState(() {
                   widget.selectedDate = dateTime;
+                  // Set selected date to the text field
+                  dateController.text = DateFormat.yMMMd().format(dateTime);
                 });
               }
             },
@@ -178,14 +176,13 @@ class _TransactionFormState extends State<TransactionForm> {
     );
   }
 
-//function untuk menyimpan transaksi yang di inputkan
+  // Function untuk menyimpan transaksi yang diinputkan
   void saveTransaction() async {
     if (selectedPayment != null) {
       try {
         double amount = double.parse(jumlahController.text);
         String title = judulController.text;
         String description = keteranganController.text;
-        String date = DateFormat('yyyy-MMM-d').format(widget.selectedDate);
 
         Transaction transaction = Transaction(
           typeid: widget.selectedTypeId, // Gunakan typeid yang diterima
@@ -193,13 +190,13 @@ class _TransactionFormState extends State<TransactionForm> {
           amount: amount,
           title: title,
           description: description,
-          date: date
+          date: DateFormat.yMMMd().format(
+              widget.selectedDate), // Menggunakan string dari selectedDate
         );
 
-        log(transaction.toString());
+        print(transaction);
         await serviceAPI.saveTransaction(transaction);
 
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Transaksi berhasil disimpan!'),
@@ -209,8 +206,7 @@ class _TransactionFormState extends State<TransactionForm> {
         // Tampilkan popup berhasil menambahkan
         _showSuccessDialog();
       } catch (e) {
-        log('Gagal menyimpan transaksi: $e');
-        // ignore: use_build_context_synchronously
+        print('Gagal menyimpan transaksi: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Gagal menyimpan transaksi: $e'),

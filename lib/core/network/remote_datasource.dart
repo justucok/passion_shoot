@@ -42,7 +42,7 @@ class RemoteDataSource {
     }
   }
 
-  Future<void> postTransaction(TransactionBody body) async {
+  /* Future<void> postTransaction(Tra body) async {
     try {
       final response =
           await dio.post('/all_transaksi', data: body.toJson());
@@ -54,7 +54,7 @@ class RemoteDataSource {
     } catch (e) {
       throw Exception('Failed to post transaction: $e');
     }
-  }
+  } */
 
   Future<void> postPaymentMethod(PostPaymentMethod paymentMethod) async {
     try {

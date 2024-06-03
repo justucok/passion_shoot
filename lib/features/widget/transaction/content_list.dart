@@ -30,7 +30,7 @@ class ContentList extends StatelessWidget {
                   element.date ==
                   DateFormat('yyyy-MM-dd').format(selectedDate!))
               .toList();
-              log(spesificData.toString());
+          log(spesificData.toString());
           for (var item in data) {
             log(item.date);
           }
@@ -75,12 +75,11 @@ class ContentList extends StatelessWidget {
     String numStr = number.toStringAsFixed(2);
     List<String> parts = numStr.split('.');
     String integerPart = parts[0];
-    String decimalPart = parts.length > 1 ? ',${parts[1]}' : '';
 
     RegExp regExp = RegExp(r'\B(?=(\d{3})+(?!\d))');
     String formattedIntegerPart =
         integerPart.replaceAllMapped(regExp, (Match match) => '.');
 
-    return formattedIntegerPart + decimalPart;
+    return formattedIntegerPart;
   }
 }

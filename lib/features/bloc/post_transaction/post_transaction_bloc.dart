@@ -1,4 +1,4 @@
-
+/* 
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -16,6 +16,9 @@ class PostTransactionBloc extends Bloc<PostTransactionEvent, PostTransactionStat
       emit(PostTransactionLoading());
       try {
         final response = await remoteDataSource.postTransaction(event.body);
+        if (response.sta) {
+          
+        }
         // log('post transaction : ${}');
       } catch (e) {
        log(e.toString()); 
@@ -23,3 +26,4 @@ class PostTransactionBloc extends Bloc<PostTransactionEvent, PostTransactionStat
     });
   }
 }
+ */
