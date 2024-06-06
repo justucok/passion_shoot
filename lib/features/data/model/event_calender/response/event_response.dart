@@ -1,32 +1,15 @@
-class DataEvent {
-  final List<Event> data;
+class PostEventResponse {
+  final int? status;
+  final String message;
 
-  DataEvent({required this.data});
-
-  factory DataEvent.fromJson(Map<String, dynamic> json) =>
-      DataEvent(
-          data: List.from(json['data'].map(
-        (event) => Event.fromJson(event),
-      )));
-}
-
-class Event {
-  final int id;
-  final String date;
-  final String title;
-  final String time;
-
-  Event({
-    required this.id,
-    required this.date,
-    required this.title,
-    required this.time,
+  PostEventResponse({
+    this.status,
+    required this.message,
   });
 
-  factory Event.fromJson(Map<String, dynamic> json) => Event(
-        id: json['id'],
-        date: json['date'].toString(),
-        title: json['title'],
-        time: json['time'].toString(),
+  factory PostEventResponse.fromJson(Map<String, dynamic> json) => PostEventResponse(
+        message: json['message'],
+        status: json['status'],
       );
 }
+

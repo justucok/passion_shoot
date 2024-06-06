@@ -1,17 +1,16 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:proj_passion_shoot/features/data/model/event_calender/body/event_body.dart';
 import 'package:proj_passion_shoot/features/data/model/event_calender/response/event_response.dart';
-import 'package:proj_passion_shoot/features/data/model/event_calender/post_event.dart';
-import 'package:proj_passion_shoot/features/data/model/payment/response/payment_response.dart';
+import 'package:proj_passion_shoot/features/data/model/payment/body/payment_body.dart';
 import 'package:proj_passion_shoot/features/data/model/payment/post_payment_method.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/body/transaction_body.dart';
-import 'package:proj_passion_shoot/features/data/model/transaction/post_transaction.dart';
-import 'package:proj_passion_shoot/features/data/model/transaction/response/transaction_response.dart';
 
 class RemoteDataSource {
   final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000/api'));
 
+  // DIO GET
   Future<DataTransaksi> getTransaction() async {
     final response = await dio.get('/all_transaksi');
     return DataTransaksi.fromJson(response.data);
@@ -28,6 +27,9 @@ class RemoteDataSource {
     return DataEvent.fromJson(response.data);
   }
 
+  // end DIO GET
+
+  // DIO POST
   Future<void> postTransaksi(DataTransaksi dataTransaksi) async {
     try {
       final response =
@@ -70,16 +72,26 @@ class RemoteDataSource {
     }
   }
 
-  Future<void> postEvent(PostEvent event) async {
+  Future<PostEventResponse> postEventCalender(Event body) async {
     try {
-      final response = await dio.post('/event', data: event.toJson());
-      if (response.statusCode == 201) {
-        // Berhasil melakukan posting data
+      final request = await dio.post('/event', data: body.toJson());
+      log('${body.toJson()}');
+      log('Post Event Response: ${request.data}');
+      if (request.statusCode == 200) {
+        log('200: ${request.data}');
+        final response = PostEventResponse(message: request.data);
+        return response;
       } else {
-        throw Exception('Failed to post event');
+        log('else: ${request.data}');
+        final response = PostEventResponse(message: request.data);
+        return response;
+        
       }
     } catch (e) {
-      throw Exception('Failed to post event: $e');
+      log('post catch: $e');
+      final response = PostEventResponse(message: e.toString());
+      return response; 
     }
   }
+
 }

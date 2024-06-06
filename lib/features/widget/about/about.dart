@@ -43,7 +43,23 @@ class AboutContent extends StatelessWidget {
                     ),
                   ),
                   const Text(
-                    'Lorem Ipsum adalah contoh teks atau dummy dalam industri percetakan dan penataan huruf atau typesetting. Lorem Ipsum telah menjadi standar contoh teks sejak tahun 1500an, saat seorang tukang cetak yang tidak dikenal mengambil sebuah kumpulan teks dan mengacaknya untuk menjadi sebuah buku contoh huruf. Ia tidak hanya bertahan selama 5 abad, tapi juga telah beralih ke penataan huruf elektronik, tanpa ada perubahan apapun. Ia mulai dipopulerkan pada tahun 1960 dengan diluncurkannya lembaran-lembaran Letraset yang menggunakan kalimat-kalimat dari Lorem Ipsum, dan seiring munculnya perangkat lunak Desktop Publishing seperti Aldus PageMaker juga memiliki versi Lorem Ipsum.',
+                    '''
+Passion Shoots adalah jasa fotografi yang bergerak dalam bidang yang sanat luas yang dimana bukan sekadar jasa fotografi biasa. Passion Shoots adalah profesional fotografer yang mengabadikan momen spesial dan penuh makna dalam hidup Anda. Bagi kami, setiap cerita unik layak diabadikan melalui foto yang indah dan berkesan.
+Layanan Passion Shoots :
+* Pemotretan keluarga: pernikahan, ulang tahun, liburan
+* Pemotretan pribadi: potret unik dan kreatif
+* Pemotretan acara: wisuda, konser, konferensi
+* Pemotretan produk: promosi produk dengan foto menarik
+* Pemotretan Olahraga : Basket, Futsal, Sepakbola dll
+Keunggulan Passion Shoots:
+* Berpengalaman: keahlian di berbagai pemotretan
+* Peralatan terbaik: foto berkualitas tinggi
+* Teknik terbaru: hasil maksimal dan kekinian
+* Harga terjangkau: paket sesuai kebutuhan
+* Layanan lengkap: pencetakan, album, desain grafis
+* Pengalaman menyenangkan: proses pemotretan yang nyaman dan berkesan
+Passion Shoots adalah pilihan tepat untuk mengabadikan momen spesial Anda. Hubungi kami untuk informasi lebih lanjut dan dapatkan penawaran menarik!
+                    ''',
                   ),
                 ],
               ),
@@ -53,15 +69,11 @@ class AboutContent extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.facebook),
-                ),
-                IconButton(
-                  onPressed: () {},
                   icon: const Icon(Icons.phone),
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.email_outlined),
+                  icon: const Icon(Icons.camera_alt),
                 ),
               ],
             )

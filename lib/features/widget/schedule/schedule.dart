@@ -190,7 +190,7 @@ class _ScheduleContentState extends State<ScheduleContent> {
                     );
                     _service.postDataToServer(newEvent); // Call the method here
                     // _fetchAndSetEvents(); // Refresh events after posting new event
-                  },
+                  }, remoteDataSource: RemoteDataSource(),
                 ),
               ),
             );

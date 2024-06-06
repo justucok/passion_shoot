@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:proj_passion_shoot/config/theme/app_theme.dart';
 import 'package:proj_passion_shoot/features/data/model/transaction/get_transaction.dart';
 
@@ -61,7 +62,7 @@ class DetailList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(9)),
               child: Center(
                 child: Text(
-                  '01 May 2024 - 31 May 2024',
+                  '${DateFormat('01 MMM yyyy').format(DateTime.now())} - ${DateFormat('30 MMM yyyy').format(DateTime.now())}',
                   style: primaryTextStyle.copyWith(
                       color: primaryColor, fontSize: 16),
                 ),

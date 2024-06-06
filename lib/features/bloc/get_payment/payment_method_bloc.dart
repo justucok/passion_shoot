@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proj_passion_shoot/core/network/remote_datasource.dart';
-import 'package:proj_passion_shoot/features/data/model/payment/response/payment_response.dart';
+import 'package:proj_passion_shoot/features/data/model/payment/body/payment_body.dart';
 
 part 'payment_method_event.dart';
 part 'payment_method_state.dart';

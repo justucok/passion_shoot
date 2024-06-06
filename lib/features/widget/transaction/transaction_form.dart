@@ -68,7 +68,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 setState(() {
                   selectedDate = dateTime;
                   tanggalController.text =
-                      DateFormat('E, dd MMM yyyy').format(selectedDate);
+                      DateFormat('yyyy-MM-dd').format(selectedDate);
                   log('pilih tgl : $selectedDate');
                 });
               }
@@ -236,7 +236,8 @@ class _TransactionFormState extends State<TransactionForm> {
             TextButton(
               child: const Text('OK'),
               onPressed: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).popAndPushNamed('/');
+                // Navigator.of(context).popUntil((route) => route.isFirst);
               },
             ),
           ],
