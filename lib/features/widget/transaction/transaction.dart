@@ -58,9 +58,9 @@ class _TransactionContentState extends State<TransactionContent> {
                     element.date ==
                     DateFormat('yyyy-MM-dd').format(selectedDate))
                 .toList();
-            log(spesificData.toString());
+            // log('spesific data: ');
             for (var item in data) {
-              log(item.date);
+              log('data: ${item.title} date: ${item.date} amount: ${item.amount}');
             }
             return Scaffold(
               // App bar
@@ -107,10 +107,10 @@ class _TransactionContentState extends State<TransactionContent> {
                               spesificData[index].description,
                             ),
                             trailing: Text(
-                              '${spesificData[index].typeid == 1 ? '+' : '-'} Rp.${formatNumberWithDots(data[index].amount)}',
+                              '${spesificData[index].typeid == 1 ? '+' : '-'} Rp.${formatNumberWithDots(spesificData[index].amount)}',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: data[index].typeid == 1
+                                color: spesificData[index].typeid == 1
                                     ? Colors.green
                                     : Colors.red,
                               ),

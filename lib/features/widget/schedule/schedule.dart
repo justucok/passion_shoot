@@ -36,55 +36,15 @@ class _ScheduleContentState extends State<ScheduleContent> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    // _selectedEvent = ValueNotifier<List<GetEvent>>([]);
-    // _fetchAndSetEvents();
   }
-
-  // Future<void> _fetchAndSetEvents() async {
-  //   try {
-  //     List<GetEvent> eventList = await _service.getEvents();
-  //     log('Data acara yang diterima:');
-  //     for (var event in eventList) {
-  //       log(event
-  //           .toString()); // Mencetak data acara yang diterima dengan informasi yang lebih detail
-  //     }
-
-  //     Map<DateTime, List<GetEvent>> eventMap = {};
-
-  //     for (var event in eventList) {
-  //       DateTime eventDate = DateTime.parse(event.date);
-  //       if (eventMap.containsKey(eventDate)) {
-  //         eventMap[eventDate]!.add(event);
-  //       } else {
-  //         eventMap[eventDate] = [event];
-  //       }
-  //     }
-
-  //     setState(() {
-  //       events = eventMap;
-  //       _selectedEvent.value = _getEventsForDay(_selectedDay!);
-  //       _selectedEvent.value = eventList;
-  //       // log("Updated _selectedEvent: ${_selectedEvent.value}");
-  //     });
-  //   } catch (e) {
-  //     // log('Error fetching events: $e');
-  //   }
-  // }
-
-  // List<GetEvent> _getEventsForDay(DateTime day) {
-  //   log('event for day : ${events[day]}');
-  //   return events[day] ?? [];
-  // }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        // _selectedEvent.value = _getEventsForDay(selectedDay);
       });
     }
-    // log('Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDay)}');
   }
 
   @override
@@ -151,25 +111,6 @@ class _ScheduleContentState extends State<ScheduleContent> {
                 height: 20,
               ),
               CardEvent(selectedDate: _selectedDay,)
-              // ValueListenableBuilder<List<GetEvent>>(
-              //   valueListenable: _selectedEvent,
-              //   builder: (context, value, _) {
-              //     // Filter events based on selected date
-              //     List<GetEvent> selectedEvents = value
-              //         .where((event) =>
-              //             DateFormat('yyyy-MM-dd')
-              //                 .format(DateTime.parse(event.date)) ==
-              //             DateFormat('yyyy-MM-dd').format(_selectedDay!))
-              //         .toList();
-
-              //     // Buat ValueNotifier baru dengan daftar acara yang telah difilter
-              //     ValueNotifier<List<GetEvent>> filteredEventsNotifier =
-              //         ValueNotifier<List<GetEvent>>(selectedEvents);
-
-              //     // Pass filteredEventsNotifier ke CardEvent
-              //     return CardEvent(selectedEvent: filteredEventsNotifier);
-              //   },
-              // ),
             ],
           ),
         ),
